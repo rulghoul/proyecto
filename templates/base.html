@@ -1,0 +1,37 @@
+<!-- templates/base.html -->
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>{% block title %}Raul Perez Duran{% endblock %}</title>
+
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    {# Load the tag library #}
+    {% load bootstrap4 %}
+    
+    {# Load CSS and JavaScript #}
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery='full' %}
+    {# Display django.contrib.messages as Bootstrap alerts #}
+    {% bootstrap_messages %}
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+      {% if user.is_authenticated %}
+      <form class="form-inline navbar-nav ml-auto" action="/action_page.php">
+        <input class="form-control mr-sm-2" type="text" placeholder="Buscar" />
+        <button class="btn btn-success" type="submit">Buscar</button>
+
+        <button class="btn"><span class="navbar-toggler-icon"></span></button>
+      </form>
+      {% else %}
+      <p></p>
+      {% endif %}
+    </nav>
+
+    <div class="container-md border float-nonet mx-auto w-50 bg-warning h-100 shadow-lg align-items-center">
+      <main>{% block content %} {% endblock %}</main>
+    </div>
+  </body>
+</html>
