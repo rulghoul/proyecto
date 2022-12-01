@@ -5,6 +5,9 @@ class TipoActividad(models.Model):
     desctipoactividad = models.CharField(db_column='DescTipoActividad', max_length=50, verbose_name='Descripcion')  # Field name made lowercase.
     bandactivo = models.BooleanField(db_column='BandActivo', blank=True, null=True, default=True, verbose_name='Activo')  # Field name made lowercase.
 
+    def __str__(self) -> str:
+        return self.cvetipoactividad
+
     class Meta:
         db_table = 'TIPO_ACTIVIDAD'
 
@@ -15,6 +18,9 @@ class TipoEvento(models.Model):
     desctipoevento = models.CharField(db_column='DescTipoEvento', max_length=50, verbose_name='Descripcion')  # Field name made lowercase.
     bandactivo = models.BooleanField(db_column='BandActivo', blank=True, null=True, default=True, verbose_name='Activo')  # Field name made lowercase.
 
+    def __str__(self) -> str:
+        return self.cvetipoevento
+
     class Meta:
         db_table = 'TIPO_EVENTO'
 
@@ -24,6 +30,9 @@ class TipoServicio(models.Model):
     cvetiposervicio = models.CharField(db_column='CveTipoServicio', max_length=20,  verbose_name='Clave')  # Field name made lowercase.
     descservicio = models.CharField(db_column='DescServicio', max_length=50, verbose_name='Descripcion')  # Field name made lowercase.
     bandactivo = models.BooleanField(db_column='BandActivo', blank=True, null=True, default=True, verbose_name='Activo')  # Field name made lowercase.
+
+    def __str__(self) -> str:
+        return self.cvetiposervicio
 
     class Meta:
         db_table = 'TIPO_SERVICIO'

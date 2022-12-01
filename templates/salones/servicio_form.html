@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-{% extends 'base.html' %}
-{% load crispy_forms_tags %}
-{% block content %}
+{% extends 'base.html' %} {% load crispy_forms_tags %} {% block content %}
 
-  <h3 class="text-center">Nuevo Servicio</h3>
-  <form action="" method=""> {% csrf_token %}
-   {{ form|crispy }}
+<div class="card shadow-lg">
+  <h3 class="card-title">Nuevo Servicio</h3>
+  <div class="card-body">
+    <form action="" method="POST">
+      {% csrf_token %} {{ form|crispy }}
 
-   <div class="col text-center">
-    <button class="btn btn-primary">Agregar</button>
-   </div>
-  </form>
- 
+      <div class="col text-center">        
+        <input type="submit" name="submit" value="Agregar" class="btn btn-primary" id="submit-save">
+      </div>
+    </form>
+  </div>
+</div>
+
 {% endblock %}
