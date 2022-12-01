@@ -1,35 +1,65 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from django.views.generic.edit import CreateView
-from salones.models import Salon, TipoSalon, Direccion, Servicio
-from .forms import SalonForm
+from salones.models import TipoActividad, TipoEvento, TipoServicio
+from .forms import ActividadForm, EventoForm, ServicioForm
 
-class SalonCreateView(CreateView):
-    model = Salon
-    fields = ('nombre', 'tipo', 'servicios', 'direccion', 'imagenes')
+class ActividadCreateView(CreateView):
+    model = TipoActividad
+    fields = ('cvetipoactividad', 'desctipoactividad')
 
-def add_salon(request):
-    form = SalonForm(request.POST or None)
+class EventoCreateView(CreateView):
+    model = TipoEvento
+    fields = ('cvetipoevento', 'desctipoevento')
+
+class ServicioCreateView(CreateView):
+    model = TipoServicio
+    fields = ('cvetiposervicio', 'descservicio')
+
+def add_actividad(request):
+    form = ActividadForm(request.POST or None)
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
-    return render(request,"salones/salon_form2.html",{'form':form})
+    return render(request,"salones/actividad_form.html",{'form':form})
+
+
+def add_evento(request):
+    form = EventoForm(request.POST or None)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.save()
+    return render(request,"salones/evento_form.html",{'form':form})
+
+def add_servicio(request):
+    form = ServicioForm(request.POST or None)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.save()
+    return render(request,"salones/servicio_form.html",{'form':form})    
+
+
 
 from rest_framework import viewsets
 from rest_framework import permissions
-from .serializers import SalonSerializer, DireccionSerializer, TipoSalonSerializer, ServicioSerializer
+from .serializers import ActividadSerializer, EventoSerializer, ServicioSerializer
 
 
-class TipoSalonViewSet(viewsets.ModelViewSet):
-    queryset = TipoSalon.objects.all()
-    serializer_class = TipoSalonSerializer
+class ActividadViewSet(viewsets.ModelViewSet):
+    queryset = TipoActividad.objects.all()
+    serializer_class = ActividadSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+class EventoViewSet(viewsets.ModelViewSet):
+    queryset = TipoEvento.objects.all()
+    serializer_class = EventoSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
 class ServicioViewSet(viewsets.ModelViewSet):
-    queryset = Servicio.objects.all()
+    queryset = TipoServicio.objects.all()
     serializer_class = ServicioSerializer
     permission_classes = [permissions.IsAuthenticated]
+
 
 def user_login(request):
     if request.method == 'POST':

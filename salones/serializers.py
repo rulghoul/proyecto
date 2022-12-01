@@ -1,25 +1,20 @@
-from .models import Salon, Direccion, Servicio, TipoSalon, Imagen
+from .models import TipoActividad, TipoEvento, TipoServicio
 from rest_framework import serializers
 
 
-class SalonSerializer(serializers.HyperlinkedModelSerializer):
+class ActividadSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Salon
-        fields = ['nombre', 'direccion', 'tipo', 'servicios', 'imagenes']
+        model = TipoActividad
+        fields = ['cvetipoactividad', 'desctipoactividad']
 
 
-class DireccionSerializer(serializers.HyperlinkedModelSerializer):
+class EventoSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Direccion
-        fields = ['calle', 'numero', 'colonia', 'municipio', 'codigo_postal']
+        model = TipoEvento
+        fields = ['cvetipoevento', 'desctipoevento']
 
 class ServicioSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Servicio
-        fields = ['nombre', 'descripcion']
+        model = TipoServicio
+        fields = ['cvetiposervicio', 'descservicio']
 
-
-class TipoSalonSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = TipoSalon
-        fields = ['nombre', 'descripcion']

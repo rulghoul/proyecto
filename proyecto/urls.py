@@ -17,15 +17,18 @@ from django.contrib import admin
 from django.urls import path, include
 
 from django.views.generic.base import TemplateView
-from salones.views import SalonCreateView, user_login, add_salon, ServicioViewSet, TipoSalonViewSet
+from salones.views import user_login, add_actividad, ActividadViewSet, add_evento, EventoViewSet, add_servicio, ServicioViewSet
 from django.contrib.auth import views as auth_views
 
 from rest_framework import routers
 router = routers.DefaultRouter()
-router.register(r'tipos', TipoSalonViewSet)
+router.register(r'actividades', ActividadViewSet)
+router.register(r'eventos', EventoViewSet)
 router.register(r'servicios', ServicioViewSet)
 
 urlpatterns = [
+    path('login/', user_login, name='user_login'),
+    path('change-password/', auth_views.PasswordChangeView.as_view()),
     path('admin/', admin.site.urls),
     path("accounts/", include("django.contrib.auth.urls")), 
     #Empieza la parte Rest
@@ -33,8 +36,8 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     #termina la parte rest
     path('', TemplateView.as_view(template_name='home.html'), name='home'), 
-    path('salon/', SalonCreateView.as_view(), name='salon'),
-    path('add_salon/', add_salon, name='add_salon'),
-    path('login/', user_login, name='user_login'),
-    path('change-password/', auth_views.PasswordChangeView.as_view()),
+    #path('add_salon/', add_salon, name='add_salon'),
+    path('add_actividad/', add_actividad, name='add_salon'),
+    path('add_evento/', add_evento, name='add_evento'),
+    path('add_servicio/', add_servicio, name='add_servicio'),
 ]

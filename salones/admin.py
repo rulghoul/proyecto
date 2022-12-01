@@ -1,10 +1,8 @@
 from django.contrib import admin
 
 
-from .models import TipoSalon, Direccion, Servicio, Imagen, Salon
+from .models import TipoActividad, TipoEvento, TipoServicio
 
-admin.site.register(TipoSalon)
-admin.site.register(Direccion)
-admin.site.register(Servicio)
-admin.site.register(Imagen)
-admin.site.register(Salon)
+admin.site.register(TipoActividad)
+admin.site.register(TipoEvento)
+admin.site.register(TipoServicio)
