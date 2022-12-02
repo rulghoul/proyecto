@@ -9,7 +9,8 @@ class ActividadForm(forms.ModelForm):
 class EventoForm(forms.ModelForm):
     class Meta:
         model = TipoEvento
-        fields = ('cvetipoevento', 'desctipoevento', 'bandactivo')
+        #fields = ('cvetipoevento', 'desctipoevento', 'bandactivo')
+        fields = '__all__'
 
 class ServicioForm(forms.ModelForm):
     class Meta:

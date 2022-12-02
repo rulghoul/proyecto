@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from django.views.generic.base import TemplateView
-from salones.views import user_login, add_actividad, ActividadViewSet, add_evento, EventoViewSet, add_servicio, ServicioViewSet
+from salones.views import user_login, add_actividad, ActividadViewSet, add_evento, EventoViewSet, add_servicio, ServicioViewSet, lista_evento, update_evento
 from django.contrib.auth import views as auth_views
 
 from rest_framework import routers
@@ -40,4 +40,6 @@ urlpatterns = [
     path('add_actividad/', add_actividad, name='add_salon'),
     path('add_evento/', add_evento, name='add_evento'),
     path('add_servicio/', add_servicio, name='add_servicio'),
+    path('lista_evento', lista_evento),
+    path('evento/<int:id_evento>/', update_evento, name='update_evento'),
 ]

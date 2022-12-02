@@ -1,4 +1,6 @@
-from django.shortcuts import render
+from django.http import HttpResponse
+from django.template import loader
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.views.generic.edit import CreateView
 from salones.models import TipoActividad, TipoEvento, TipoServicio
@@ -60,6 +62,23 @@ class ServicioViewSet(viewsets.ModelViewSet):
     serializer_class = ServicioSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+
+def lista_evento(request):
+    eventos_list = TipoEvento.objects.all()
+    template = loader.get_template('salones/catalogos/list.html')
+    context = {
+        'eventos_list': eventos_list,
+        'titulo': "Eventos",
+        'encabezados': {"id":'ID',"clave":"CLAVE","descripcion":"DESCRIPCION", "activo":"ACTIVO"},
+    }
+    return HttpResponse(template.render(context, request))
+
+def update_evento(request, id_evento):
+    evento = get_object_or_404(TipoEvento, pk=id_evento)
+    form = EventoForm(instance=evento)
+    template = loader.get_template('salones/catalogos/update.html')
+    context = {'catalogo': evento, 'titulo': "Evento", "form": form}
+    return HttpResponse(template.render(context, request))
 
 def user_login(request):
     if request.method == 'POST':
