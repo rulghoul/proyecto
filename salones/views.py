@@ -25,7 +25,7 @@ def add_actividad(request):
         instance.save() 
         return redirect(lista_actividad)    
     template = loader.get_template('salones/catalogos/add.html')
-    context = {'titulo': "Nueva Actividad", "form": form}
+    context = {'titulo': "Nueva Actividad", "form": form, 'regresa':'lista_actividad'}
     return HttpResponse(template.render(context, request))
 
 def update_actividad(request, id_actividad):
@@ -38,7 +38,7 @@ def update_actividad(request, id_actividad):
     else:
         form = EventoForm(instance=actividad)
     template = loader.get_template('salones/catalogos/update.html')
-    context = {'catalogo': actividad, 'titulo': "Actualiza Evento", "form": form}
+    context = {'catalogo': actividad, 'titulo': "Actualiza Actividad", "form": form, 'regresa':'lista_actividad'}
     return HttpResponse(template.render(context, request))
 
 def add_evento(request):
@@ -48,7 +48,7 @@ def add_evento(request):
         instance.save() 
         return redirect(lista_evento)    
     template = loader.get_template('salones/catalogos/add.html')
-    context = {'titulo': "Nuevo Evento", "form": form}
+    context = {'titulo': "Nuevo Evento", "form": form, 'regresa':'lista_evento'}
     return HttpResponse(template.render(context, request))
 
 def update_evento(request, id_evento):
@@ -61,7 +61,7 @@ def update_evento(request, id_evento):
     else:
         form = EventoForm(instance=evento)
     template = loader.get_template('salones/catalogos/update.html')
-    context = {'catalogo': evento, 'titulo': "Actualiza Evento", "form": form}
+    context = {'catalogo': evento, 'titulo': "Actualiza Evento", "form": form, 'regresa':'lista_evento'}
     return HttpResponse(template.render(context, request))
 
 def add_servicio(request):
@@ -71,7 +71,7 @@ def add_servicio(request):
         instance.save()
         return redirect(lista_servicio)    
     template = loader.get_template('salones/catalogos/add.html')
-    context = {'titulo': "Nuevo Servicio", "form": form}
+    context = {'titulo': "Nuevo Servicio", "form": form, 'regresa':'lista_servicio'}
     return HttpResponse(template.render(context, request))   
 
 def update_servicio(request, id_servicio):
@@ -84,7 +84,7 @@ def update_servicio(request, id_servicio):
     else:
         form = EventoForm(instance=servicio)
     template = loader.get_template('salones/catalogos/update.html')
-    context = {'catalogo': servicio, 'titulo': "Actualiza Evento", "form": form}
+    context = {'catalogo': servicio, 'titulo': "Actualiza Servicio", "form": form, 'regresa':'lista_servicio'}
     return HttpResponse(template.render(context, request))
 
 from rest_framework import viewsets
@@ -115,7 +115,7 @@ def lista_actividad(request):
         'titulo': "Actividades",
         'add':"add_actividad",
         'add_label':'Nueva actividad',
-        'update':'actividad',
+        'update':'update_actividad',
         'encabezados': {"id":'ID',"clave":"CLAVE","descripcion":"DESCRIPCION", "activo":"ACTIVO"},
     }
     return HttpResponse(template.render(context, request))
@@ -128,7 +128,7 @@ def lista_evento(request):
         'titulo': "Eventos",
         'add':"add_evento",
         'add_label':'Nuevo Evento',
-        'update':'evento',
+        'update':'update_evento',
         'encabezados': {"id":'ID',"clave":"CLAVE","descripcion":"DESCRIPCION", "activo":"ACTIVO"},
     }
     return HttpResponse(template.render(context, request))
@@ -142,23 +142,12 @@ def lista_servicio(request):
         'titulo': "Servicios",
         'add':"add_servicio",
         'add_label':'Nuevo Servicio',
-        'update':'servicio',
+        'update':'update_servicio',
         'encabezados': {"id":'ID',"clave":"CLAVE","descripcion":"DESCRIPCION", "activo":"ACTIVO"},
     }
     return HttpResponse(template.render(context, request))
 
-def update_evento(request, id_evento):
-    evento = get_object_or_404(TipoEvento, pk=id_evento)
-    if request.method == 'POST':
-        form = EventoForm(request.POST,instance=evento)
-        if form.is_valid():
-            form.save()
-            return redirect(lista_evento)
-    else:
-        form = EventoForm(instance=evento)
-    template = loader.get_template('salones/catalogos/update.html')
-    context = {'catalogo': evento, 'titulo': "Actualiza Evento", "form": form}
-    return HttpResponse(template.render(context, request))
+
 
 def user_login(request):
     if request.method == 'POST':

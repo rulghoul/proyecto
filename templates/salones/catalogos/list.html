@@ -18,7 +18,7 @@
 <tbody>
 {% for elemento in lista %}
 <tr>
-    <td><a href="/{{update}}/{{ elemento.id_pk }}/">{{ elemento.clave }}</a></td>
+    <td><a href="{% url update elemento.id_pk %}">{{ elemento.clave }}</a></td>
     <td>{{ elemento.descripcion }}</td>
     <td>{{ elemento.bandactivo }}</td>
 </tr>
