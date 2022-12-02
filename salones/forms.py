@@ -4,7 +4,7 @@ from salones.models import TipoActividad, TipoEvento, TipoServicio
 class ActividadForm(forms.ModelForm):
     class Meta:
         model = TipoActividad
-        fields = ('cvetipoactividad', 'desctipoactividad', 'bandactivo')
+        fields = '__all__'
 
 class EventoForm(forms.ModelForm):
     class Meta:
@@ -15,7 +15,7 @@ class EventoForm(forms.ModelForm):
 class ServicioForm(forms.ModelForm):
     class Meta:
         model = TipoServicio
-        fields = ('cvetiposervicio', 'descservicio', 'bandactivo')
+        fields = '__all__'
 
 #from django.forms import inlineformset_factory
 #SalonFormSet = inlineformset_factory(Salon, Direccion, fields=('nombre', 'tipo', 'servicios',))

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 {% extends 'base.html' %} {% load crispy_forms_tags %} {% block content %}
 
-<div class="card shadow-lg">
-  <h3 class="card-title">Nueva Actividad</h3>
+<div class="card shadow-lg">  
+  <h3 class="card-title">{{ titulo }}</h3>
   <div class="card-body">
     <form action="" method="POST">
       {% csrf_token %} {{ form|crispy }}

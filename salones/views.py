@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.template import loader
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login
 from django.views.generic.edit import CreateView
 from salones.models import TipoActividad, TipoEvento, TipoServicio
@@ -8,39 +8,84 @@ from .forms import ActividadForm, EventoForm, ServicioForm
 
 class ActividadCreateView(CreateView):
     model = TipoActividad
-    fields = ('cvetipoactividad', 'desctipoactividad')
+    fields = ('clave', 'descripcion')
 
 class EventoCreateView(CreateView):
     model = TipoEvento
-    fields = ('cvetipoevento', 'desctipoevento')
+    fields = ('clave', 'descripcion')
 
 class ServicioCreateView(CreateView):
     model = TipoServicio
-    fields = ('cvetiposervicio', 'descservicio')
+    fields = ('clave', 'descripcion')
 
 def add_actividad(request):
     form = ActividadForm(request.POST or None)
     if form.is_valid():
         instance = form.save(commit=False)
-        instance.save()
-    return render(request,"salones/actividad_form.html",{'form':form})
+        instance.save() 
+        return redirect(lista_actividad)    
+    template = loader.get_template('salones/catalogos/add.html')
+    context = {'titulo': "Nueva Actividad", "form": form}
+    return HttpResponse(template.render(context, request))
 
+def update_actividad(request, id_actividad):
+    actividad = get_object_or_404(TipoActividad, pk=id_actividad)
+    if request.method == 'POST':
+        form = EventoForm(request.POST,instance=actividad)
+        if form.is_valid():
+            form.save()
+            return redirect(lista_actividad)
+    else:
+        form = EventoForm(instance=actividad)
+    template = loader.get_template('salones/catalogos/update.html')
+    context = {'catalogo': actividad, 'titulo': "Actualiza Evento", "form": form}
+    return HttpResponse(template.render(context, request))
 
 def add_evento(request):
     form = EventoForm(request.POST or None)
     if form.is_valid():
         instance = form.save(commit=False)
-        instance.save()
-    return render(request,"salones/evento_form.html",{'form':form})
+        instance.save() 
+        return redirect(lista_evento)    
+    template = loader.get_template('salones/catalogos/add.html')
+    context = {'titulo': "Nuevo Evento", "form": form}
+    return HttpResponse(template.render(context, request))
+
+def update_evento(request, id_evento):
+    evento = get_object_or_404(TipoEvento, pk=id_evento)
+    if request.method == 'POST':
+        form = EventoForm(request.POST,instance=evento)
+        if form.is_valid():
+            form.save()
+            return redirect(lista_evento)
+    else:
+        form = EventoForm(instance=evento)
+    template = loader.get_template('salones/catalogos/update.html')
+    context = {'catalogo': evento, 'titulo': "Actualiza Evento", "form": form}
+    return HttpResponse(template.render(context, request))
 
 def add_servicio(request):
     form = ServicioForm(request.POST or None)
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
-    return render(request,"salones/servicio_form.html",{'form':form})    
+        return redirect(lista_servicio)    
+    template = loader.get_template('salones/catalogos/add.html')
+    context = {'titulo': "Nuevo Servicio", "form": form}
+    return HttpResponse(template.render(context, request))   
 
-
+def update_servicio(request, id_servicio):
+    servicio = get_object_or_404(TipoActividad, pk=id_servicio)
+    if request.method == 'POST':
+        form = EventoForm(request.POST,instance=servicio)
+        if form.is_valid():
+            form.save()
+            return redirect(lista_servicio)
+    else:
+        form = EventoForm(instance=servicio)
+    template = loader.get_template('salones/catalogos/update.html')
+    context = {'catalogo': servicio, 'titulo': "Actualiza Evento", "form": form}
+    return HttpResponse(template.render(context, request))
 
 from rest_framework import viewsets
 from rest_framework import permissions
@@ -62,22 +107,57 @@ class ServicioViewSet(viewsets.ModelViewSet):
     serializer_class = ServicioSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+def lista_actividad(request):
+    actividad_list = TipoActividad.objects.all()
+    template = loader.get_template('salones/catalogos/list.html')
+    context = {
+        'lista': actividad_list,
+        'titulo': "Actividades",
+        'add':"add_actividad",
+        'add_label':'Nueva actividad',
+        'update':'actividad',
+        'encabezados': {"id":'ID',"clave":"CLAVE","descripcion":"DESCRIPCION", "activo":"ACTIVO"},
+    }
+    return HttpResponse(template.render(context, request))
 
 def lista_evento(request):
     eventos_list = TipoEvento.objects.all()
     template = loader.get_template('salones/catalogos/list.html')
     context = {
-        'eventos_list': eventos_list,
+        'lista': eventos_list,
         'titulo': "Eventos",
+        'add':"add_evento",
+        'add_label':'Nuevo Evento',
+        'update':'evento',
+        'encabezados': {"id":'ID',"clave":"CLAVE","descripcion":"DESCRIPCION", "activo":"ACTIVO"},
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def lista_servicio(request):
+    servicio_list = TipoServicio.objects.all()
+    template = loader.get_template('salones/catalogos/list.html')
+    context = {
+        'lista': servicio_list,
+        'titulo': "Servicios",
+        'add':"add_servicio",
+        'add_label':'Nuevo Servicio',
+        'update':'servicio',
         'encabezados': {"id":'ID',"clave":"CLAVE","descripcion":"DESCRIPCION", "activo":"ACTIVO"},
     }
     return HttpResponse(template.render(context, request))
 
 def update_evento(request, id_evento):
     evento = get_object_or_404(TipoEvento, pk=id_evento)
-    form = EventoForm(instance=evento)
+    if request.method == 'POST':
+        form = EventoForm(request.POST,instance=evento)
+        if form.is_valid():
+            form.save()
+            return redirect(lista_evento)
+    else:
+        form = EventoForm(instance=evento)
     template = loader.get_template('salones/catalogos/update.html')
-    context = {'catalogo': evento, 'titulo': "Evento", "form": form}
+    context = {'catalogo': evento, 'titulo': "Actualiza Evento", "form": form}
     return HttpResponse(template.render(context, request))
 
 def user_login(request):

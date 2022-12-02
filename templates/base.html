@@ -19,6 +19,19 @@
   <body>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
       {% if user.is_authenticated %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'home' %}">Inicio</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+          Catalogos
+        </a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="{% url 'lista_actividad' %}">Actividades</a>
+          <a class="dropdown-item" href="{% url 'lista_evento' %}">Eventos</a>
+          <a class="dropdown-item" href="{% url 'lista_servicio' %}">Servicios</a>
+        </div>
+      </li>
       <form class="form-inline navbar-nav ml-auto" action="/action_page.php">
         <input class="form-control mr-sm-2" type="text" placeholder="Buscar" />
         <button class="btn btn-success" type="submit">Buscar</button>
