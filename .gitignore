@@ -1,0 +1,31 @@
+# Django #
+*.log
+*.pot
+*.pyc
+__pycache__
+
+
+# Environments 
+.env 
+.venv 
+env/ 
+venv/ 
+ENV/ 
+env.bak/ 
+venv.bak/
+proyecto/__pycache__/__init__.cpython-310.pyc
+proyecto/__pycache__/settings.cpython-310.pyc
+proyecto/__pycache__/urls.cpython-310.pyc
+proyecto/__pycache__/wsgi.cpython-310.pyc
+proyecto/__pycache__/__init__.cpython-310.pyc
+proyecto/__pycache__/settings.cpython-310.pyc
+proyecto/__pycache__/urls.cpython-310.pyc
+proyecto/__pycache__/wsgi.cpython-310.pyc
+salones/__pycache__/__init__.cpython-310.pyc
+salones/__pycache__/admin.cpython-310.pyc
+salones/__pycache__/apps.cpython-310.pyc
+salones/__pycache__/forms.cpython-310.pyc
+salones/__pycache__/models.cpython-310.pyc
+salones/__pycache__/serializers.cpython-310.pyc
+salones/__pycache__/views.cpython-310.pyc
+salones/migrations/__pycache__/__init__.cpython-310.pyc

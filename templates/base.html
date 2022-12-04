@@ -19,9 +19,9 @@
   <body>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
       {% if user.is_authenticated %}
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'home' %}">Inicio</a>
-      </li>
+      <ul>
+        <a class="nav-brand" href="{% url 'home' %}"><img src="{% static 'admin/fiesta50.png' %}" /></a>
+      
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
           Catalogos
@@ -32,14 +32,15 @@
           <a class="dropdown-item" href="{% url 'lista_servicio' %}">Servicios</a>
         </div>
       </li>
+    </ul>
       <form class="form-inline navbar-nav ml-auto" action="/action_page.php">
-        <input class="form-control mr-sm-2" type="text" placeholder="Buscar" />
-        <button class="btn btn-success" type="submit">Buscar</button>
-
-        <button class="btn"><span class="navbar-toggler-icon"></span></button>
+        <a class="btn btn-danger" href="{% url 'logout' %}">Salir</a>
       </form>
-      {% else %}
-      <p></p>
+
+      {% else %}      
+      <form class="form-inline navbar-nav ml-auto" action="/action_page.php">
+        <a class="btn btn-success" href="{% url 'login' %}">Ingresar</a>
+      </form>
       {% endif %}
     </nav>
 
