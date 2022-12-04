@@ -1,10 +1,28 @@
 {% extends 'base.html' %} {% block title %}Login{% endblock %} {% block content %}
+{% load static %}
+<style>
+		.brand_logo_container {
+			position: relative;
+			height: 170px;
+			width: 170px; Ev72U2PaN8jH4dX
+			border-radius: 50%;
+			background: #60a3bc;
+			padding: 10px;
+			text-align: center;
+		}
+		.brand_logo {
+			height: 150px;
+			width: 150px;
+			border-radius: 50%;
+			border: 2px solid white;
+		}
+</style>
 
 <div class="user_card align-self-center">
   <div class="d-flex justify-content-center">
     <div class="brand_logo_container">
       <img
-        src="https://ceneval.edu.mx/wp-content/uploads/2020/11/logoCeneval.png"
+        src="{% static 'admin/fiesta500.png' %}" 
         class="brand_logo"
         alt="Logo"
       />
