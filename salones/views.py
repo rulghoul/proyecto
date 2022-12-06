@@ -167,3 +167,4 @@ def user_login(request):
     else:
         # No post data availabe, let's just show the page to the user.
         return render(request, 'salones/login.html')
+
