@@ -30,7 +30,7 @@ INSTALLED_APPS = [
     'bootstrap4',
     'crispy_forms',
     'rest_framework',
-    'fontawesomefree',
+#    'fontawesomefree',
 #    'easy_maps',
 ]
 
