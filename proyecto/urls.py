@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from django.views.generic.base import TemplateView
-from salones.views import user_login, add_actividad, ActividadViewSet, add_evento, EventoViewSet, add_servicio, ServicioViewSet, lista_evento, update_evento, lista_actividad, update_actividad, lista_servicio, update_servicio
+from salones.views import user_login, add_actividad, ActividadViewSet, add_evento, EventoViewSet, add_servicio, ServicioViewSet, lista_evento, update_evento, lista_actividad, update_actividad, lista_servicio, update_servicio, home_view
 from django.contrib.auth import views as auth_views
 
 from rest_framework import routers
@@ -20,7 +20,7 @@ urlpatterns = [
     path('json/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     #termina la parte rest
-    path('', TemplateView.as_view(template_name='home.html'), name='home'), 
+    path('', home_view, name='home'), 
     #path('add_salon/', add_salon, name='add_salon'),
     path('add_actividad/', add_actividad, name='add_salon'),
     path('add_evento/', add_evento, name='add_evento'),

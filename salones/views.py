@@ -3,7 +3,7 @@ from django.template import loader
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login
 from django.views.generic.edit import CreateView
-from salones.models import TipoActividad, TipoEvento, TipoServicio
+from salones.models import TipoActividad, TipoEvento, TipoServicio, Foto
 from .forms import ActividadForm, EventoForm, ServicioForm
 
 class ActividadCreateView(CreateView):
@@ -168,3 +168,8 @@ def user_login(request):
         # No post data availabe, let's just show the page to the user.
         return render(request, 'salones/login.html')
 
+def home_view(request):   
+    template = loader.get_template('home.html')
+    fotos = Foto.objects.all()
+    context = {'titulo': "Nueva Actividad", "fotos": fotos, 'regresa':'lista_actividad'}
+    return HttpResponse(template.render(context, request))

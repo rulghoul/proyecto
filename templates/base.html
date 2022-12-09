@@ -7,6 +7,7 @@
     <title>{% block title %}Fiestas{% endblock %}</title>
 
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
     {# Load the tag library #}
     {% load bootstrap4 %}
     
@@ -25,6 +26,7 @@
       
         <div class="dropdown">
           <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="fa-solid fa-gear"></span>
             Catalogos
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">            
@@ -34,11 +36,15 @@
           </div>
         </div>
         <div class="dropdown">
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuUsuario" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button class="btn btn-secondary dropdown-toggle" id="dropdownMenuUsuario" data-toggle="dropdown" >
+            <span class="fas fa-user"></span>
             Usuarios
           </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuUsuario">            
-          <a class="dropdown-item" href="{% url 'password_change' %}">Cambiar la contraseña</a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuUsuario">           
+          <a class="dropdown-item" href="{% url 'password_change' %}">
+            <span class="fas fa-key"></span>
+            Cambiar la contraseña
+          </a>
           </div>
         </div>
       <form class="form-inline navbar-nav ml-auto" action="/action_page.php">
