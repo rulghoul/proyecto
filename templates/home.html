@@ -11,4 +11,33 @@
   <p>Aun no haz iniciado sesion</p>
   <a href="{% url 'login' %}">Ingresar</a>
 {% endif %}
+
+<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+<div id="carouselExampleControls" class="carousel-inner" role="listbox">
+  {% for foto in fotos %}
+    {% if forloop.first %}
+      <div class="carousel-item active">
+    {% else %}
+      <div class="carousel-item">
+    {% endif %}
+      {% if foto.image %}
+        <img class="img-responsive center-block" src='{{ foto.image.url }}' alt="Image">
+      {% endif %}
+        <div class="carousel-caption d-none d-md-block" >
+          <h3 style="color: yellow; -webkit-text-stroke: 2px black;font-weight: bold;">{{ foto.title }}</h3>
+          <p style="color: yellow; -webkit-text-stroke: 2px black;font-weight: bold;">{{ foto.description }}</p>
+        </div>
+      </div>
+  {%endfor%}
+
+  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" ></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" ></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+</div>
 {% endblock %}
