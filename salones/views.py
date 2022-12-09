@@ -75,14 +75,14 @@ def add_servicio(request):
     return HttpResponse(template.render(context, request))   
 
 def update_servicio(request, id_servicio):
-    servicio = get_object_or_404(TipoActividad, pk=id_servicio)
+    servicio = get_object_or_404(TipoServicio, pk=id_servicio)
     if request.method == 'POST':
         form = EventoForm(request.POST,instance=servicio)
         if form.is_valid():
             form.save()
             return redirect(lista_servicio)
     else:
-        form = EventoForm(instance=servicio)
+        form = ServicioForm(instance=servicio)
     template = loader.get_template('salones/catalogos/update.html')
     context = {'catalogo': servicio, 'titulo': "Actualiza Servicio", "form": form, 'regresa':'lista_servicio'}
     return HttpResponse(template.render(context, request))
