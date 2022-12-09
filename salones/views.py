@@ -108,7 +108,7 @@ class ServicioViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 def lista_actividad(request):
-    actividad_list = TipoActividad.objects.all()
+    actividad_list = TipoActividad.objects.all().order_by('clave').values()
     template = loader.get_template('salones/catalogos/list.html')
     context = {
         'lista': actividad_list,
@@ -121,7 +121,7 @@ def lista_actividad(request):
     return HttpResponse(template.render(context, request))
 
 def lista_evento(request):
-    eventos_list = TipoEvento.objects.all()
+    eventos_list = TipoEvento.objects.all().order_by('clave').values()
     template = loader.get_template('salones/catalogos/list.html')
     context = {
         'lista': eventos_list,
@@ -135,7 +135,7 @@ def lista_evento(request):
 
 
 def lista_servicio(request):
-    servicio_list = TipoServicio.objects.all()
+    servicio_list = TipoServicio.objects.all().order_by('clave').values()
     template = loader.get_template('salones/catalogos/list.html')
     context = {
         'lista': servicio_list,
