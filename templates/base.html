@@ -5,9 +5,6 @@
   <head>
     <meta charset="utf-8" />
     <title>{% block title %}Fiestas{% endblock %}</title>
-
-    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
-    <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
     {# Load the tag library #}
     {% load bootstrap4 %}
     
@@ -16,8 +13,20 @@
     {% bootstrap_javascript jquery='full' %}
     {# Display django.contrib.messages as Bootstrap alerts #}
     {% bootstrap_messages %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>    
+    <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+
   </head>
   <body>
+    <style>
+      .select{
+        border-radius: 3rem;
+        }
+      .textinput   {
+        border-radius: 3rem;
+        }
+    </style>
     <nav class="navbar navbar-expand-lg bg-dark navbar-dark sticky-top">
       {% if user.is_authenticated %}
         <a class="nav-brand" href="{% url 'home' %}">
@@ -32,7 +41,10 @@
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">            
           <a class="dropdown-item" href="{% url 'lista_actividad' %}">Actividades</a>
           <a class="dropdown-item" href="{% url 'lista_evento' %}">Eventos</a>
-          <a class="dropdown-item" href="{% url 'lista_servicio' %}">Servicios</a>
+          <a class="dropdown-item" href="{% url 'lista_servicio' %}">Servicios</a>          
+          <a class="dropdown-item" href="{% url 'eventos' %}">Eventos Completos</a>
+          <a class="dropdown-item" href="{% url 'lista_tipo_cliente' %}">Tipo Clientes</a>
+          <a class="dropdown-item" href="{% url 'clientes' %}">Clientes</a>
           </div>
         </div>
         <div class="dropdown">

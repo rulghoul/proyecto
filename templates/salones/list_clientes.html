@@ -6,32 +6,35 @@
 
 <div class="row" style="margin-bottom: 1em; margin-top: 1em;">
     <h3 class="col-5">{{ titulo }}</h3>
-    <button id="create" class="btn btn-primary" type="button" name="button">{{ add_label }} Modal</button>
-    <a class="btn btn-primary col-2" href="{{ add }}">{{ add_label }}</a>
+    <a id="crear" class="btn btn-primary col-2" href="{{ add }}">{{ add_label }}</a>
     <input class="form-control col-4 ml-auto" id="myInput" type="text" placeholder="Buscar..">
 </div>
 <table class="table table-striped table-sm">
     <thead class="thead-dark">
     <tr>
-        <th>{{ encabezados.clave }} </th>
-        <th>{{ encabezados.descripcion }} </th>
-        <th>{{ encabezados.activo }} </th>
-        <th></th>
+        <th>{{ encabezados.nombre }} </th>
+        <th>{{ encabezados.primer_apellido }} </th>
+        <th>{{ encabezados.segundo_apellido }} </th>
+        <th>{{ encabezados.cvetipopersona }} </th>
+        <th>{{ encabezados.correo }} </th>
     </tr>
 </thead>
 <tbody id="CuerpoCatalogo">
 {% for elemento in lista %}
 <tr>
-    <td><a href="{% url update elemento.id_pk %}">{{ elemento.clave }}</a></td>
-    <td>{{ elemento.descripcion }}</td>
-    <td>{{ elemento.bandactivo|yesno:"Activo,Inactivo,Indefinido" }}</td>
+    <td><a href="{% url update elemento.folioevento %}">{{ elemento.folioevento }}</a></td>
+    <td>{{ elemento.nombre }}</td>
+    <td>{{ elemento.primer_apellido }}</td>
+    <td>{{ elemento.segundo_apellido }}</td>
+    <td>{{ elemento.cvetipopersona }}</td>
+    <td>{{ elemento.correo }}</td>
     <td class="text-center">
       <!-- Read book buttons -->
-      <button type="button" class="read-book btn btn-sm btn-primary">
+      <button type="button" class="read-book btn btn-sm btn-primary" >
         <span class="fa fa-eye"></span>
       </button>
       <!-- Update book buttons -->
-      <button type="button" class="update-book btn btn-sm btn-info" data-form-url="{% url detalle elemento.id_pk %}">
+      <button type="button" class="update-book btn btn-sm btn-primary" >
         <span class="fa fa-pencil"></span>
       </button>
       <!-- Delete book buttons -->
@@ -51,8 +54,6 @@
           $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
       });
-      
-     
     });
     </script>
 {% endblock %}
