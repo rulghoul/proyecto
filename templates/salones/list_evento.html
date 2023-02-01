@@ -4,6 +4,7 @@
 
 {% block content %}
 
+
 <div class="row" style="margin-bottom: 1em; margin-top: 1em;">
     <h3 class="col-5">{{ titulo }}</h3>
     <a id="crear" class="btn btn-primary col-2" href="{{ add }}">{{ add_label }}</a>
@@ -13,8 +14,8 @@
     <thead class="thead-dark">
     <tr>
         <th>{{ encabezados.folioevento }} </th>
-        <th>{{ encabezados.cvetipoevento }} </th>
-        <th>{{ encabezados.cvepersona }} </th>
+        <th>{{ encabezados.evento }} </th>
+        <th>{{ encabezados.persona }} </th>
         <th>{{ encabezados.opcion }} </th>
         <th>{{ encabezados.nombre }} </th>
         <th>{{ encabezados.banaprovada }} </th>
@@ -22,11 +23,12 @@
     </tr>
 </thead>
 <tbody id="CuerpoCatalogo">
-{% for elemento in lista %}
+{% for elemento in object_list %}
+
 <tr>
     <td><a href="{% url update elemento.folioevento %}">{{ elemento.folioevento }}</a></td>
     <td>{{ elemento.cvetipoevento }}</td>
-    <td>{{ elemento.cvepersona|pluralize }}</td>
+    <td>{{ elemento.cvepersona }}</td>
     <td>{{ elemento.opcion }}</td>
     <td>{{ elemento.nombre }}</td>
     <td>{{ elemento.banaprovada|yesno:"Activo,Inactivo,Indefinido" }}</td>

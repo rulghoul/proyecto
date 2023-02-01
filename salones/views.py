@@ -3,6 +3,9 @@ from django.template import loader
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login
 from django.views.generic.edit import CreateView
+from django.views import generic
+from django.urls import reverse
+
 from salones.models import (
     TipoActividad, 
     TipoEvento, 
@@ -16,7 +19,6 @@ from .forms import (
     ActividadForm, 
     EventoForm, 
     ServicioForm,
-    EventoFormModal,
     EventoCompletoForm,
     PersonaPrincipalForm,
     TipoClienteForm,
@@ -138,21 +140,26 @@ def lista_actividad(request):
     }
     return HttpResponse(template.render(context, request))
 
-def lista_evento(request):
-    eventos_list = TipoEvento.objects.all().order_by('clave').values()
-    template = loader.get_template('salones/catalogos/list.html')
-    context = {
-        'lista': eventos_list,
-        'titulo': "Eventos",
-        'add':"add_evento",
-        'add_label':'Nuevo Evento',
-        'update':'update_evento',        
-        'detalle':'detalle_evento',
-        'encabezados': {"id":'Folio',"clave":"CLAVE","descripcion":"DESCRIPCION", "activo":"ACTIVO"},
-    }
-    return HttpResponse(template.render(context, request))
+class lista_evento(generic.ListView):
+    model = TipoEvento
+    template_name = ('salones/catalogos/list.html')
 
-
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context['lista'] = TipoEvento.objects.all().order_by('clave').values()
+        datos = {
+            'titulo': "Eventos",
+            'add':"add_evento",
+            'add_label':'Nuevo Evento',
+            'update':'update_evento',        
+            'detalle':'detalle_evento',
+            'encabezados': {"id":'Folio',"clav e":"CLAVE","descripcion":"DESCRIPCION", "activo":"ACTIVO"},
+        }
+        context.update(datos)
+        return context
+    
 def lista_servicio(request):
     servicio_list = TipoServicio.objects.all().order_by('clave').values()
     template = loader.get_template('salones/catalogos/list.html')
@@ -195,48 +202,65 @@ def home_view(request):
     return HttpResponse(template.render(context, request))
 
 
-def eventos(request):
-    actividad_list = EncEvento.objects.all().values()
-    template = loader.get_template('salones/list_evento.html')
-    context = {
-        'lista': actividad_list,
-        'titulo': "Eventos",
-        'add':"add_evento_completo",
-        'add_label':'Nuevo evento',
-        'update':'update_evento_completo',
-        'encabezados': {
-            "folioevento":'ID',
-            "cvetipoevento":"CLAVE EVENTO",
-            "cvepersona":"CLIENTE", 
-            "opcion":"OPCION",
-            "nombre":"NOMBRE",
-            "banaprovada":"ACTIVA",
-            },
-    }
-    return HttpResponse(template.render(context, request))
+class eventos(generic.ListView):
+    model = EncEvento
+    template_name = 'salones/list_evento.html'
 
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        datos = {
+                'titulo': "Eventos",
+                'add':"add_evento_completo",
+                'add_label':'Nuevo evento',
+                'update':'update_evento_completo',
+                'encabezados': {
+                    "folioevento":'ID',
+                    "evento":"CLAVE EVENTO",
+                    "persona":"CLIENTE", 
+                    "opcion":"OPCION",
+                    "nombre":"NOMBRE",
+                    "banaprovada":"ACTIVA",
+                    },
+            }
+        context.update(datos)
+        return context
+
+def detail_evento(request, id_evento):    
+    evento = get_object_or_404(EncEvento, pk=EncEvento)
+    form = EventoCompletoForm(request.POST, instance=evento)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.save()
+        return redirect(eventos)    
+    template = loader.get_template('salones/catalogos/add.html')
+    context = {'titulo': "Nuevo Evento", "form": form, 'regresa':'eventos'}
+    return HttpResponse(template.render(context, request))
+    
 
 def add_evento_completo(request):
     form = EventoCompletoForm(request.POST or None)
     if form.is_valid():
         instance = form.save(commit=False)
+        instance.opcion = 1 #Agrega la opcion 1 a la instancia
         instance.save() 
-        return redirect(eventos)    
+        #return redirect(eventos)
+        return  redirect(reverse('detail_evento', kwargs={'evento_id': instance.id}))   
     template = loader.get_template('salones/catalogos/add.html')
     context = {'titulo': "Nuevo Evento", "form": form, 'regresa':'eventos'}
     return HttpResponse(template.render(context, request))
 
 def update_evento_completo(request, id_evento):
-    evento = get_object_or_404(EventoCompletoForm, pk=id_evento)
+    evento = get_object_or_404(EncEvento, pk=id_evento)
     if request.method == 'POST':
-        form = EventoCompletoForm(request.POST,instance=evento)
+        form = EventoCompletoForm(request.POST, instance=evento)
         if form.is_valid():
             form.save()
             return redirect(eventos)
     else:
         form = EventoCompletoForm(instance=evento)
     template = loader.get_template('salones/catalogos/update.html')
-    context = {'catalogo': evento, 'titulo': "Actualiza Tipo Cliente", "form": form, 'regresa':'eventos'}
+    context = {'catalogo': evento, 'titulo': "Actualiza Evento", "form": form, 'regresa':'eventos'}
     return HttpResponse(template.render(context, request))
 
 
@@ -251,39 +275,13 @@ from bootstrap_modal_forms.generic import (
 )
 from django.urls import reverse_lazy
 
-class EventoCreateView(BSModalCreateView):
-    template_name = 'salones/catalogos/create.html'
-    form_class = EventoFormModal
-    success_message = 'Success: Se creo Evento'
-    success_url = reverse_lazy('lista_evento')
-
-
-class EventoUpdateView(BSModalUpdateView):
-    model = TipoEvento
-    template_name = 'examples/update_book.html'
-    form_class = EventoFormModal
-    success_message = 'Success: Book was updated.'
-    success_url = reverse_lazy('lista_evento')
-
-
-class EventoReadView(BSModalReadView):
-    model = TipoEvento
-    template_name = 'salones/catalogos/detalle.html'
-
-
-class EventoDeleteView(BSModalDeleteView):
-    model = TipoEvento
-    template_name = 'salones/catalogos/borrar.html'
-    success_message = 'Success: Book was deleted.'
-    success_url = reverse_lazy('lista_evento')
-
 def detalle_actividad(request, id_ctividad):
     evento = get_object_or_404(TipoActividad, pk=id_ctividad)
     if request.method == 'POST':
         form = ActividadForm(request.POST,instance=evento)
         if form.is_valid():
             form.save()
-            return redirect(lista_evento)
+            return redirect(lista_actividad)
     else:
         form = ActividadForm(instance=evento)
     template = loader.get_template('salones/catalogos/detalle.html')
@@ -317,24 +315,32 @@ def detalle_servicio(request, id_servicio):
     return HttpResponse(template.render(context, request))
 
 
-def clientes(request):
-    actividad_list = PersonaPrincipal.objects.all().values()
-    template = loader.get_template('salones/list_evento.html')
-    context = {
-        'lista': [],
-        'titulo': "Clientes",
-        'add':"add_cliente",
-        'add_label':'Nuevo Cliente',
-        'update':'update_cliente',
-        'encabezados': {
-            "nombre":'NOMBRE',
-            "primer_apellido":"PRIMER APELLIDO",
-            "segundo_apellido":"SEGUNDO APELLIDO", 
-            "cvetipopersona":"TIPO",
-            "correo":"CORREO",
-            },
-    }
-    return HttpResponse(template.render(context, request))
+class personas(generic.ListView):
+    model = PersonaPrincipal
+    template_name  = 'salones/list_cliente.html'
+    
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context['lista'] = EncEvento.objects.all()
+
+        datos = {
+            'titulo': "Personas",
+            'add':"add_cliente",
+            'add_label':'Nueva Persona',
+            'update':'update_cliente',
+            'encabezados': {
+                "id":"ID",
+                "nombre":'NOMBRE',
+                "primer_apellido":"PRIMER APELLIDO",
+                "segundo_apellido":"SEGUNDO APELLIDO", 
+                "cvetipopersona":"TIPO",
+                "correo":"CORREO",
+                },
+        }
+        context.update(datos)
+        return context
 
 
 def add_cliente(request):
@@ -344,30 +350,52 @@ def add_cliente(request):
         instance.save()
         return redirect(lista_servicio)    
     template = loader.get_template('salones/catalogos/add.html')
-    context = {'titulo': "Nuevo cliente", "form": form, 'regresa':'clientes'}
+    context = {'titulo': "Nueva Persona", "form": form, 'regresa':'clientes'}
     return HttpResponse(template.render(context, request))   
 
-def update_cliente(request):
-    form = PersonaPrincipalForm(request.POST or None)
-    if form.is_valid():
-        instance = form.save(commit=False)
-        instance.save()
-        return redirect(lista_servicio)    
-    template = loader.get_template('salones/catalogos/add.html')
-    context = {'titulo': "Nuevo cliente", "form": form, 'regresa':'clientes'}
+def update_cliente(request, id_persona):
+    persona = get_object_or_404(PersonaPrincipal, pk=id_persona)
+    if request.method == 'POST':
+        form = PersonaPrincipalForm(request.POST,instance=persona)
+        if form.is_valid():
+            form.save()
+            return redirect(lista_tipo_cliente)
+    else:
+        form = PersonaPrincipalForm(instance=persona)  
+    template = loader.get_template('salones/catalogos/update.html')
+    context = {"catalogo": persona,'titulo': "Actualiza persona", "form": form, 'regresa':'clientes'}
     return HttpResponse(template.render(context, request))   
 
+class lista_tipo_persona(generic.ListView):
+    model = TipoPersona
+    template_name  = 'salones/catalogos/list.html'
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        lista = TipoPersona.objects.all().order_by('clave').values()
+        datos = {
+            'lista': lista,
+            'titulo': "Tipo Persona",
+            'add':"add_tipo_cliente",
+            'add_label':'Nuevo Tipo Persona',
+            'update':'update_tipo_cliente',  
+            'detalle':'detalle_servicio',
+            'encabezados': {"id":'ID',"clave":"CLAVE","descripcion":"DESCRIPCION", "activo":"ACTIVO"},
+        }
+        context.update(datos)
+        return context
+    
 
 def lista_tipo_cliente(request):
-    eventos_list = TipoPersona.objects.all().order_by('clave').values()
+    clientes = TipoPersona.objects.all().values()
     template = loader.get_template('salones/catalogos/list.html')
     context = {
-        'lista': eventos_list,
-        'titulo': "Tipo Cliente",
+        'lista': clientes,
+        'titulo': "Tipo Persona",
         'add':"add_tipo_cliente",
-        'add_label':'Nuevo Tipo Cliente',
-        'update':'update_tipo_cliente',        
-        'detalle':'detalle_tipo_cliente',
+        'add_label':'Nuevo Tipo Persona',
+        'update':'update_tipo_cliente',  
         'encabezados': {"id":'ID',"clave":"CLAVE","descripcion":"DESCRIPCION", "activo":"ACTIVO"},
     }
     return HttpResponse(template.render(context, request))
@@ -383,15 +411,15 @@ def add_tipo_cliente(request):
     context = {'titulo': "Nuevo Tipo Cliente", "form": form, 'regresa':'lista_tipo_cliente'}
     return HttpResponse(template.render(context, request))
 
-def update_tipo_cliente(request, id_actividad):
-    actividad = get_object_or_404(TipoClienteForm, pk=id_actividad)
+def update_tipo_cliente(request, id_tipo_persona):
+    tipo_persona = get_object_or_404(TipoPersona, pk=id_tipo_persona)
     if request.method == 'POST':
-        form = EventoForm(request.POST,instance=actividad)
+        form = TipoClienteForm(request.POST,instance=tipo_persona)
         if form.is_valid():
             form.save()
             return redirect(lista_tipo_cliente)
     else:
-        form = EventoForm(instance=actividad)
+        form = TipoClienteForm(instance=tipo_persona)  
     template = loader.get_template('salones/catalogos/update.html')
-    context = {'catalogo': actividad, 'titulo': "Actualiza Tipo Cliente", "form": form, 'regresa':'lista_tipo_cliente'}
+    context = {"catalogo": tipo_persona, 'titulo': "Actualiza Tipo Cliente", "form": form, 'regresa':'lista_tipo_cliente'}
     return HttpResponse(template.render(context, request))

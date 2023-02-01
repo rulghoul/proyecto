@@ -6,7 +6,6 @@
 
 <div class="row" style="margin-bottom: 1em; margin-top: 1em;">
     <h3 class="col-5">{{ titulo }}</h3>
-    <button id="create" class="btn btn-primary" type="button" name="button">{{ add_label }} Modal</button>
     <a class="btn btn-primary col-2" href="{{ add }}">{{ add_label }}</a>
     <input class="form-control col-4 ml-auto" id="myInput" type="text" placeholder="Buscar..">
 </div>
@@ -20,7 +19,7 @@
     </tr>
 </thead>
 <tbody id="CuerpoCatalogo">
-{% for elemento in lista %}
+{% for elemento in lista  %}
 <tr>
     <td><a href="{% url update elemento.id_pk %}">{{ elemento.clave }}</a></td>
     <td>{{ elemento.descripcion }}</td>

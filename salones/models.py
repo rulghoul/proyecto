@@ -31,61 +31,6 @@ class DesgloseServicio(models.Model):
         db_table = 'desglose_servicio'
 
 
-class DetEvento(models.Model):
-    iddetalle = models.PositiveSmallIntegerField(db_column='IdDetalle', primary_key=True)  # Field name made lowercase.
-    cveopcion = models.ForeignKey('EncEventoOpcion', models.DO_NOTHING, db_column='CveOpcion')  # Field name made lowercase.
-    cvetipoactividad = models.ForeignKey('TipoActividad', models.DO_NOTHING, db_column='CveTipoActividad')  # Field name made lowercase.
-    cvedesgloseservicio = models.ForeignKey(DesgloseServicio, models.DO_NOTHING, db_column='CveDesgloseServicio')  # Field name made lowercase.
-    cveclasifservicio = models.ForeignKey(ClasifServicio, models.DO_NOTHING, db_column='CveClasifServicio')  # Field name made lowercase.
-    cvetiposervicio = models.ForeignKey('TipoServicio', models.DO_NOTHING, db_column='CveTipoServicio')  # Field name made lowercase.
-    costo = models.FloatField(db_column='Costo', blank=True, null=True)  # Field name made lowercase.
-    fecha = models.DateTimeField(db_column='Fecha', blank=True, null=True)  # Field name made lowercase.
-    history = HistoricalRecords()
-
-    class Meta:
-        db_table = 'det_evento'
-
-
-class Egresos(models.Model):
-    id_egresos = models.SmallAutoField(primary_key=True)
-    cve_detalle = models.ForeignKey(DetEvento, models.DO_NOTHING, db_column='Cve_detalle')  # Field name made lowercase.
-    monto = models.FloatField(db_column='Monto')  # Field name made lowercase.
-    spei = models.CharField(db_column='SPEI', max_length=50)  # Field name made lowercase.
-    history = HistoricalRecords()
-
-    class Meta:
-        db_table = 'egresos'
-
-
-class EncEvento(models.Model):
-    folioevento = models.SmallAutoField(db_column='FolioEvento', primary_key=True)  # Field name made lowercase.
-    cvetipoevento = models.ForeignKey('TipoEvento', models.DO_NOTHING, db_column='CveTipoEvento')  # Field name made lowercase.
-    cvepersona = models.ForeignKey('PersonaPrincipal', models.DO_NOTHING, db_column='CvePersona')  # Field name made lowercase.
-    opcion = models.ForeignKey('EncEventoOpcion', models.DO_NOTHING, db_column='Opcion', blank=True, null=True)  # Field name made lowercase.
-    nombre = models.CharField(db_column='Nombre', max_length=50, blank=True, null=True)  # Field name made lowercase.
-    banaprovada = models.BooleanField(db_column='BanAprovada', blank=False, null=False, default=True, verbose_name='Aprobada')  # Field name made lowercase.
-    history = HistoricalRecords()
-
-    class Meta:
-        db_table = 'enc_evento'
-
-
-class EncEventoOpcion(models.Model):
-    folioevento = models.PositiveSmallIntegerField(db_column='FolioEvento', primary_key=True)  # Field name made lowercase.
-    cveevento = models.PositiveSmallIntegerField(db_column='CveEvento')  # Field name made lowercase.
-    cvepersona = models.PositiveSmallIntegerField(db_column='CvePersona')  # Field name made lowercase.
-    numopcion = models.PositiveSmallIntegerField(db_column='NumOpcion', blank=True, null=True)  # Field name made lowercase.
-    nombre = models.CharField(db_column='Nombre', max_length=50, blank=True, null=True)  # Field name made lowercase.
-    monto = models.FloatField(db_column='Monto', blank=True, null=True)  # Field name made lowercase.
-    history = HistoricalRecords()
-
-    def __str__(self) -> str:
-        return self.nombre
-
-
-    class Meta:
-        db_table = 'enc_evento_opcion'
-
 
 class EstatusActividad(models.Model):
     idestatusactividad = models.SmallAutoField(db_column='IdEstatusActividad', primary_key=True)  # Field name made lowercase.
@@ -102,7 +47,7 @@ class EstatusActividad(models.Model):
 
 class FasesProcesos(models.Model):
     idfase = models.SmallAutoField(db_column='IdFase', primary_key=True)  # Field name made lowercase.
-    cveproceso = models.ForeignKey('Procesos', models.DO_NOTHING, db_column='CveProceso')  # Field name made lowercase.
+    #cveproceso = models.ForeignKey('Procesos', models.DO_NOTHING, db_column='CveProceso')  # Field name made lowercase.
     cvefase = models.CharField(db_column='CveFase', unique=True, max_length=20)  # Field name made lowercase.
     descfase = models.CharField(db_column='DescFase', unique=True, max_length=50)  # Field name made lowercase.
     bandactivo = models.BooleanField(db_column='BandActivo', blank=False, null=False, default=True, verbose_name='Activo')  # Field name made lowercase.
@@ -110,16 +55,6 @@ class FasesProcesos(models.Model):
     class Meta:
         db_table = 'fases_procesos'
 
-
-class Ingresos(models.Model):
-    idingresos = models.OneToOneField(EncEvento, models.DO_NOTHING, db_column='IdIngresos', primary_key=True)  # Field name made lowercase.
-    cveevento = models.PositiveSmallIntegerField(db_column='CveEvento')  # Field name made lowercase.
-    monto = models.FloatField(db_column='Monto')  # Field name made lowercase.
-    spei = models.CharField(db_column='SPEI', max_length=50, blank=True, null=True)  # Field name made lowercase.
-    history = HistoricalRecords()
-
-    class Meta:
-        db_table = 'ingresos'
 
 
 
@@ -202,7 +137,7 @@ class TipoEvento(models.Model):
     bandactivo = models.BooleanField(db_column='BandActivo', blank=False, null=False, default=True, verbose_name='Activo')  # Field name made lowercase.
 
     def __str__(self) -> str:
-        return f"{self.clave} - {self.descripcion}"
+        return self.descripcion
 
     class Meta:
         db_table = 'TIPO_EVENTO'
@@ -235,3 +170,72 @@ class Foto(models.Model):
     class Meta:
         ordering = ["timestamp"]
         verbose_name = 'Foto'
+
+
+class EncEvento(models.Model):
+    folioevento = models.SmallAutoField(db_column='FolioEvento', primary_key=True)  # Field name made lowercase.
+    cvetipoevento = models.ForeignKey(TipoEvento, models.DO_NOTHING, db_column='CveTipoEvento')  # Field name made lowercase.
+    cvepersona = models.ForeignKey(PersonaPrincipal, models.DO_NOTHING, db_column='CvePersona')  # Field name made lowercase.
+    opcion = models.PositiveSmallIntegerField(db_column='Opcion', blank=True, null=True)  # Field name made lowercase.
+    nombre = models.CharField(db_column='Nombre', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    banaprovada = models.BooleanField(db_column='BanAprovada', blank=False, null=False, default=True, verbose_name='Aprobada')  # Field name made lowercase.
+    history = HistoricalRecords()
+
+    class Meta:
+        db_table = 'enc_evento'
+
+
+
+class EncEventoOpcion(models.Model):
+    folioevento = models.PositiveSmallIntegerField(db_column='FolioEvento', primary_key=True)  # Field name made lowercase.
+    evento = models.PositiveSmallIntegerField(db_column='CveEvento')  # Field name made lowercase.
+    persona = models.PositiveSmallIntegerField(db_column='CvePersona')  # Field name made lowercase.
+    numopcion = models.PositiveSmallIntegerField(db_column='NumOpcion', blank=True, null=True)  # Field name made lowercase.
+    nombre = models.CharField(db_column='Nombre', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    monto = models.FloatField(db_column='Monto', blank=True, null=True)  # Field name made lowercase.
+    history = HistoricalRecords()
+
+    def __str__(self) -> str:
+        return self.nombre
+
+
+    class Meta:
+        db_table = 'enc_evento_opcion'
+
+
+class DetEvento(models.Model):
+    iddetalle = models.PositiveSmallIntegerField(db_column='IdDetalle', primary_key=True)  # Field name made lowercase.
+    cveopcion = models.ForeignKey('EncEventoOpcion', models.DO_NOTHING, db_column='CveOpcion')  # Field name made lowercase.
+    cvetipoactividad = models.ForeignKey('TipoActividad', models.DO_NOTHING, db_column='CveTipoActividad')  # Field name made lowercase.
+    cvedesgloseservicio = models.ForeignKey(DesgloseServicio, models.DO_NOTHING, db_column='CveDesgloseServicio')  # Field name made lowercase.
+    cveclasifservicio = models.ForeignKey(ClasifServicio, models.DO_NOTHING, db_column='CveClasifServicio')  # Field name made lowercase.
+    cvetiposervicio = models.ForeignKey('TipoServicio', models.DO_NOTHING, db_column='CveTipoServicio')  # Field name made lowercase.
+    costo = models.FloatField(db_column='Costo', blank=True, null=True)  # Field name made lowercase.
+    fecha = models.DateTimeField(db_column='Fecha', blank=True, null=True)  # Field name made lowercase.
+    history = HistoricalRecords()
+
+    class Meta:
+        db_table = 'det_evento'
+
+
+
+class Egresos(models.Model):
+    id_egresos = models.SmallAutoField(primary_key=True)
+    cve_detalle = models.ForeignKey(DetEvento, models.DO_NOTHING, db_column='Cve_detalle')  # Field name made lowercase.
+    monto = models.FloatField(db_column='Monto')  # Field name made lowercase.
+    spei = models.CharField(db_column='SPEI', max_length=50)  # Field name made lowercase.
+    history = HistoricalRecords()
+
+    class Meta:
+        db_table = 'egresos'
+
+class Ingresos(models.Model):
+    idingresos = models.OneToOneField(EncEvento, models.DO_NOTHING, db_column='IdIngresos', primary_key=True)  # Field name made lowercase.
+    cveevento = models.PositiveSmallIntegerField(db_column='CveEvento')  # Field name made lowercase.
+    monto = models.FloatField(db_column='Monto')  # Field name made lowercase.
+    spei = models.CharField(db_column='SPEI', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    history = HistoricalRecords()
+
+    class Meta:
+        db_table = 'ingresos'
+

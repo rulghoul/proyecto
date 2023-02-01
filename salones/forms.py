@@ -27,7 +27,7 @@ class ServicioForm(forms.ModelForm):
 class EventoCompletoForm(forms.ModelForm):
     class Meta:
         model = EncEvento
-        fields = '__all__'
+        fields = ['cvetipoevento', 'cvepersona', 'nombre', 'banaprovada']
 
 
 class TipoClienteForm(forms.ModelForm):
