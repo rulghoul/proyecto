@@ -41,14 +41,3 @@ class PersonaPrincipalForm(forms.ModelForm):
         model = PersonaPrincipal
         fields = '__all__'
 
-
-#from django.forms import inlineformset_factory
-#SalonFormSet = inlineformset_factory(Salon, Direccion, fields=('nombre', 'tipo', 'servicios',))
-
-from bootstrap_modal_forms.forms import BSModalModelForm, BSModalForm
-from bootstrap_modal_forms.mixins import PopRequestMixin, CreateUpdateAjaxMixin
-
-class EventoFormModal(BSModalModelForm):
-    class Meta:
-        model = EncEvento
-        fields = '__all__'

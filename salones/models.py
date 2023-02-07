@@ -11,8 +11,8 @@ from simple_history.models import HistoricalRecords
 class ClasifServicio(models.Model):
     idclasifservicio = models.SmallAutoField(db_column='IdClasifServicio', primary_key=True)  # Field name made lowercase.
     cvetiposervicio = models.ForeignKey('TipoServicio', models.DO_NOTHING, db_column='CveTipoServicio')  # Field name made lowercase.
-    cveclasifservicio = models.CharField(db_column='CveClasifServicio', unique=True, max_length=20)  # Field name made lowercase.
-    descclasifservicio = models.CharField(db_column='DescClasifServicio', unique=True, max_length=50)  # Field name made lowercase.
+    cveclasifservicio = models.CharField(db_column='CveClasifServicio', unique=False, max_length=20)  # Field name made lowercase.
+    descclasifservicio = models.CharField(db_column='DescClasifServicio', unique=False, max_length=50)  # Field name made lowercase.
     bandactivo = models.BooleanField(db_column='BandActivo', blank=False, null=False, default=True, verbose_name='Activo')  # Field name made lowercase.
 
     class Meta:
@@ -22,8 +22,8 @@ class ClasifServicio(models.Model):
 class DesgloseServicio(models.Model):
     iddesgloseservicio = models.SmallAutoField(db_column='IdDesgloseServicio', primary_key=True)  # Field name made lowercase.
     cveclasifservicio = models.ForeignKey(ClasifServicio, models.DO_NOTHING, db_column='CveClasifServicio')  # Field name made lowercase.
-    cvedesgloseservicio = models.CharField(db_column='CveDesgloseServicio', unique=True, max_length=20)  # Field name made lowercase.
-    descdesgloseservicio = models.CharField(db_column='DescDesgloseServicio', unique=True, max_length=50)  # Field name made lowercase.
+    cvedesgloseservicio = models.CharField(db_column='CveDesgloseServicio', unique=False, max_length=20)  # Field name made lowercase.
+    descdesgloseservicio = models.CharField(db_column='DescDesgloseServicio', unique=False, max_length=50)  # Field name made lowercase.
     bandactivo = models.BooleanField(db_column='BandActivo', blank=False, null=False, default=True, verbose_name='Activo')  # Field name made lowercase.
     datelastupdate = models.DateTimeField(db_column='DateLastUpdate')  # Field name made lowercase.
     

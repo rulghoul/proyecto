@@ -265,14 +265,7 @@ def update_evento_completo(request, id_evento):
 
 
 
-from bootstrap_modal_forms.generic import (
-    BSModalLoginView,
-    BSModalFormView,
-    BSModalCreateView,
-    BSModalUpdateView,
-    BSModalReadView,
-    BSModalDeleteView
-)
+
 from django.urls import reverse_lazy
 
 def detalle_actividad(request, id_ctividad):

@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 import sys
 
-sys.modules['fontawesome_free'] = __import__('fontawesome-free')
+#sys.modules['fontawesome_free'] = __import__('fontawesome-free')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     'rest_framework',    
     'simple_history',
     'fontawesomefree',    
-    'bootstrap_modal_forms',
+#    'bootstrap_modal_forms',
 #    'easy_maps',
 ]
 
@@ -83,8 +83,8 @@ DATABASES = {
         'NAME': 'proyecto',
         'USER': 'root',
         'PASSWORD': 'Kenqsduldc843',
-        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
-        'PORT': '3306',
+        'HOST': '127.0.0.1',   # Or an IP Address that your DB is hosted on
+        'PORT': '3360',
     }
 }
 
