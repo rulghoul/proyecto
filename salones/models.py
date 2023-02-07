@@ -212,6 +212,9 @@ class DetEvento(models.Model):
     cvetiposervicio = models.ForeignKey('TipoServicio', models.DO_NOTHING, db_column='CveTipoServicio')  # Field name made lowercase.
     costo = models.FloatField(db_column='Costo', blank=True, null=True)  # Field name made lowercase.
     fecha = models.DateTimeField(db_column='Fecha', blank=True, null=True)  # Field name made lowercase.
+    tiempo = models.PositiveSmallIntegerField(db_column='Tiempo', null=True, blank=False, default=None)
+    estatus = models.ForeignKey(EstatusActividad, models.DO_NOTHING, db_column='CveEstatus', null=True, default=None)
+    nota = models.CharField(db_column='Notas', null= True, default=None, max_length=100)
     history = HistoricalRecords()
 
     class Meta:
