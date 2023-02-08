@@ -30,7 +30,7 @@
         <span class="fa fa-eye"></span>
       </button>
       <!-- Update book buttons -->
-      <button type="button" class="update-book btn btn-sm btn-info" data-form-url="{% url detalle elemento.id_pk %}">
+      <button type="button" class="update-book btn btn-sm btn-info" >
         <span class="fa fa-pencil"></span>
       </button>
       <!-- Delete book buttons -->
@@ -42,16 +42,4 @@
 {% endfor %}
 </tbody>
 </table>
-<script>
-    $(document).ready(function(){
-      $("#myInput").on("keyup", function() {
-        var value = $(this).val().toLowerCase();
-        $("#CuerpoCatalogo tr").filter(function() {
-          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-        });
-      });
-      
-     
-    });
-    </script>
 {% endblock %}
