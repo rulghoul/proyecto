@@ -24,6 +24,9 @@
       .textinput   {
         border-radius: 3rem;
         }
+      .input   {
+        border-radius: 3rem;
+        }
       .pleca {
         background-color: #050B3A;
       }
@@ -38,7 +41,7 @@
         </a>
       
         <div class="dropdown">
-          <button class="btn btn-secondary dropdown-toggle menupleca" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button class="btn btn-primary dropdown-toggle menupleca" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="fa-solid fa-gear"></span>
             Catalogos
           </button>
@@ -46,7 +49,7 @@
           <a class="dropdown-item" href="{% url 'lista_actividad' %}">Actividades</a>
           <a class="dropdown-item" href="{% url 'lista_evento' %}">Eventos</a>
           <a class="dropdown-item" href="{% url 'lista_servicio' %}">Servicios</a>  
-          <a class="dropdown-item" href="{% url 'lista_tipo_cliente' %}">Tipo Clientes</a>
+          <a class="dropdown-item" href="{% url 'lista_tipo_cliente' %}">Tipo Personas</a>
           <a class="dropdown-item" href="{% url 'clientes' %}">Personas</a>
           </div>
         </div>

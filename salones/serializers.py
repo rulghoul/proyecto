@@ -5,16 +5,16 @@ from rest_framework import serializers
 class ActividadSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = TipoActividad
-        fields = ['cvetipoactividad', 'desctipoactividad']
+        fields = ['clave', 'descripcion']
 
 
 class EventoSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = TipoEvento
-        fields = ['cvetipoevento', 'desctipoevento']
+        fields =  ['clave', 'descripcion']
 
 class ServicioSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = TipoServicio
-        fields = ['cvetiposervicio', 'descservicio']
+        fields =  ['clave', 'descripcion']
 

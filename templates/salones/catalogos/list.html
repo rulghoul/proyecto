@@ -21,22 +21,21 @@
 <tbody id="CuerpoCatalogo">
 {% for elemento in lista  %}
 <tr>
-    <td><a href="{% url update elemento.id_pk %}">{{ elemento.clave }}</a></td>
     <td>{{ elemento.descripcion }}</td>
     <td>{{ elemento.bandactivo|yesno:"Activo,Inactivo,Indefinido" }}</td>
     <td class="text-center">
       <!-- Read book buttons -->
-      <button type="button" class="read-book btn btn-sm btn-primary">
+      <a type="button" class="read-book btn btn-sm btn-primary" href="{% url detalle elemento.id_pk %}">
         <span class="fa fa-eye"></span>
-      </button>
+      </a>
       <!-- Update book buttons -->
-      <button type="button" class="update-book btn btn-sm btn-info" >
+      <a type="button" class="update-book btn btn-sm btn-info" href="{% url update elemento.id_pk %}" >
         <span class="fa fa-pencil"></span>
-      </button>
+      </a>
       <!-- Delete book buttons -->
-      <button type="button" class="delete-book btn btn-sm btn-danger" >
+      <a type="button" class="delete-book btn btn-sm btn-danger" href="{% url borra elemento.id_pk %}">
         <span class="fa fa-trash"></span>
-      </button>
+      </a>
     </td>
 </tr>
 {% endfor %}

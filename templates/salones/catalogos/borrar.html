@@ -1,22 +1,21 @@
-{% load widget_tweaks %}
+{% extends "base.html" %}
 
-<form method="post" action="">
-  {% csrf_token %}
+{% block title %}{{ titulo }}{% endblock %}
 
-  <div class="modal-header">
-    <h3 class="modal-title">{{ titulo }}</h3>
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
+{% block content %}
+
+<div class="card shadow-lg">
+  <h3 class="card-title">{{ titulo }}</h3>
+  <div class="card-body">
+    <form action="" method="POST">
+      {% csrf_token %}  {{ form }}
+        <p>¿Estás segura de que quieres eliminar {{ object }}?</p>
+        <div class="col text-center">        
+          <input type="submit" name="submit" value="Borrar" class="btn btn-danger" id="submit-save">
+          <a class="btn btn-primary" href="{{request.META.HTTP_REFERER|escape}}">Regresar</a>
+        </div>
+      </form>
+    </div>
   </div>
-
-  <div class="modal-body">
-    <p class="delete-text">Are you sure you want to delete book with title
-      <strong>{{ elemento.clave }}</strong>?</p>
-  </div>
-
-  <div class="modal-footer">
-    <button type="submit" id="delete-btn" class="btn btn-danger">Delete</button>
-  </div>
-
-</form>
+</div>
+{% endblock %}

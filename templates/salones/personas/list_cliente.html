@@ -12,18 +12,17 @@
 <table class="table table-striped table-sm">
     <thead class="thead-dark">
     <tr>
-        <th>{{ encabezados.id }}</th>
         <th>{{ encabezados.nombre }} </th>
         <th>{{ encabezados.primer_apellido }} </th>
         <th>{{ encabezados.segundo_apellido }} </th>
         <th>{{ encabezados.cvetipopersona }} </th>
         <th>{{ encabezados.correo }} </th>
+        <th></th>
     </tr>
 </thead>
 <tbody id="CuerpoCatalogo">
 {% for elemento in object_list %}
 <tr>
-    <td><a href="{% url update elemento.idpersonaprincipal %}">{{ elemento.idpersonaprincipal }}</a></td>
     <td>{{ elemento.nombre }}</td>
     <td>{{ elemento.primer_apellido }}</td>
     <td>{{ elemento.segundo_apellido }}</td>
@@ -31,17 +30,17 @@
     <td>{{ elemento.correo }}</td>
     <td class="text-center">
       <!-- Read book buttons -->
-      <button type="button" class="read-book btn btn-sm btn-primary" >
+      <a type="button" class="read-book btn btn-sm btn-primary" href="{% url detalle elemento.idpersonaprincipal %}">
         <span class="fa fa-eye"></span>
-      </button>
+      </a>
       <!-- Update book buttons -->
-      <button type="button" class="update-book btn btn-sm btn-primary" >
+      <a type="button" class="update-book btn btn-sm btn-primary" href="{% url update elemento.idpersonaprincipal %}">
         <span class="fa fa-pencil"></span>
-      </button>
+      </a>
       <!-- Delete book buttons -->
-      <button type="button" class="delete-book btn btn-sm btn-danger" >
+      <a type="button" class="delete-book btn btn-sm btn-danger" href="{% url borra elemento.idpersonaprincipal %}">
         <span class="fa fa-trash"></span>
-      </button>
+      </a>
     </td>
 </tr>
 {% endfor %}

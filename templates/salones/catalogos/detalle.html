@@ -1,22 +1,15 @@
-{% load widget_tweaks %}
+{% extends "base.html" %}
 
-<form method="post" action="">
-    {% csrf_token %}
-  
-   <div class="modal-header">
-      <h5 class="modal-title">{{ title }}</h5>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
+{% block title %}{{ titulo }}{% endblock %}
+
+{% block content %}
+<div class="card shadow-lg">
+    <h3 class="card-title">{{ titulo }}</h3>
+    <div class="card-body">
+        <p><strong>Clave:</strong> {{ object.clave }}</p>
+        <p><strong>Descripcion:</strong>{{ object.descripcion }}</p>
+        <a class="btn btn-primary" href="{{request.META.HTTP_REFERER|escape}}">Regresar</a>
     </div>
-  
-    <div class="modal-body">
-        {{ form|crispy }}
-    </div>
-  
-    <div class="modal-footer">
-      <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-      <button type="submit" class="btn btn-primary">Crear</button>
-    </div>
-  
-  </form>
+</div>
+</div>
+{% endblock %}
