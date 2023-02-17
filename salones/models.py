@@ -9,23 +9,29 @@ from django.db import models
 from simple_history.models import HistoricalRecords
 
 class ClasifServicio(models.Model):
-    idclasifservicio = models.SmallAutoField(db_column='IdClasifServicio', primary_key=True)  # Field name made lowercase.
-    cvetiposervicio = models.ForeignKey('TipoServicio', models.DO_NOTHING, db_column='CveTipoServicio')  # Field name made lowercase.
-    cveclasifservicio = models.CharField(db_column='CveClasifServicio', unique=False, max_length=20)  # Field name made lowercase.
-    descclasifservicio = models.CharField(db_column='DescClasifServicio', unique=False, max_length=50)  # Field name made lowercase.
-    bandactivo = models.BooleanField(db_column='BandActivo', blank=False, null=False, default=True, verbose_name='Activo')  # Field name made lowercase.
+    idclasifservicio = models.SmallAutoField(db_column='IdClasifServicio', primary_key=True)  
+    cvetiposervicio = models.ForeignKey('TipoServicio', models.DO_NOTHING, db_column='CveTipoServicio')  
+    cveclasifservicio = models.CharField(db_column='CveClasifServicio', unique=False, max_length=20)  
+    descclasifservicio = models.CharField(db_column='DescClasifServicio', unique=False, max_length=50)  
+    bandactivo = models.BooleanField(db_column='BandActivo', blank=False, null=False, default=True, verbose_name='Activo')  
+
+    def __str__(self) -> str:
+        return self.descclasifservicio
 
     class Meta:
         db_table = 'clasif_servicio'
 
 
 class DesgloseServicio(models.Model):
-    iddesgloseservicio = models.SmallAutoField(db_column='IdDesgloseServicio', primary_key=True)  # Field name made lowercase.
-    cveclasifservicio = models.ForeignKey(ClasifServicio, models.DO_NOTHING, db_column='CveClasifServicio')  # Field name made lowercase.
-    cvedesgloseservicio = models.CharField(db_column='CveDesgloseServicio', unique=False, max_length=20)  # Field name made lowercase.
-    descdesgloseservicio = models.CharField(db_column='DescDesgloseServicio', unique=False, max_length=50)  # Field name made lowercase.
-    bandactivo = models.BooleanField(db_column='BandActivo', blank=False, null=False, default=True, verbose_name='Activo')  # Field name made lowercase.
-    datelastupdate = models.DateTimeField(db_column='DateLastUpdate')  # Field name made lowercase.
+    iddesgloseservicio = models.SmallAutoField(db_column='IdDesgloseServicio', primary_key=True)  
+    cveclasifservicio = models.ForeignKey(ClasifServicio, models.DO_NOTHING, db_column='CveClasifServicio')  
+    cvedesgloseservicio = models.CharField(db_column='CveDesgloseServicio', unique=False, max_length=20)  
+    descdesgloseservicio = models.CharField(db_column='DescDesgloseServicio', unique=False, max_length=50)  
+    bandactivo = models.BooleanField(db_column='BandActivo', blank=False, null=False, default=True, verbose_name='Activo')  
+    datelastupdate = models.DateTimeField(db_column='DateLastUpdate')  
+    
+    def __str__(self) -> str:
+        return self.descdesgloseservicio
     
     class Meta:
         db_table = 'desglose_servicio'
@@ -33,24 +39,24 @@ class DesgloseServicio(models.Model):
 
 
 class EstatusActividad(models.Model):
-    idestatusactividad = models.SmallAutoField(db_column='IdEstatusActividad', primary_key=True)  # Field name made lowercase.
-    clave = models.CharField(db_column='CveEstatusActividad', unique=True, max_length=20)  # Field name made lowercase.
-    descripcion = models.CharField(db_column='DescEstatusActividad', unique=True, max_length=50)  # Field name made lowercase.
-    bandactivo = models.BooleanField(db_column='BandActivo', blank=False, null=False, default=True, verbose_name='Activo')  # Field name made lowercase.
+    idestatusactividad = models.SmallAutoField(db_column='IdEstatusActividad', primary_key=True)  
+    clave = models.CharField(db_column='CveEstatusActividad', unique=True, max_length=20)  
+    descripcion = models.CharField(db_column='DescEstatusActividad', unique=True, max_length=50)  
+    bandactivo = models.BooleanField(db_column='BandActivo', blank=False, null=False, default=True, verbose_name='Activo')  
 
     def __str__(self) -> str:
-        return self.clave
+        return self.descripcion
 
     class Meta:
         db_table = 'estatus_actividad'
 
 
 class FasesProcesos(models.Model):
-    idfase = models.SmallAutoField(db_column='IdFase', primary_key=True)  # Field name made lowercase.
-    #cveproceso = models.ForeignKey('Procesos', models.DO_NOTHING, db_column='CveProceso')  # Field name made lowercase.
-    cvefase = models.CharField(db_column='CveFase', unique=True, max_length=20)  # Field name made lowercase.
-    descfase = models.CharField(db_column='DescFase', unique=True, max_length=50)  # Field name made lowercase.
-    bandactivo = models.BooleanField(db_column='BandActivo', blank=False, null=False, default=True, verbose_name='Activo')  # Field name made lowercase.
+    idfase = models.SmallAutoField(db_column='IdFase', primary_key=True)  
+    #cveproceso = models.ForeignKey('Procesos', models.DO_NOTHING, db_column='CveProceso')  
+    cvefase = models.CharField(db_column='CveFase', unique=True, max_length=20)  
+    descfase = models.CharField(db_column='DescFase', unique=True, max_length=50)  
+    bandactivo = models.BooleanField(db_column='BandActivo', blank=False, null=False, default=True, verbose_name='Activo')  
 
     class Meta:
         db_table = 'fases_procesos'
@@ -59,10 +65,10 @@ class FasesProcesos(models.Model):
 
 
 class TipoPersona(models.Model):
-    id_pk = models.SmallAutoField(db_column='IdTipoPersona', primary_key=True)  # Field name made lowercase.
-    clave = models.CharField(db_column='CveTipoPersona', unique=True, max_length=20, verbose_name='Clave')  # Field name made lowercase.
-    descripcion = models.CharField(db_column='DescTipoPersona', unique=True, max_length=50, verbose_name='Descripcion')  # Field name made lowercase.
-    bandactivo = models.BooleanField(db_column='BandActivo', blank=False, null=False, default=True, verbose_name='Activo')  # Field name made lowercase.
+    id_pk = models.SmallAutoField(db_column='IdTipoPersona', primary_key=True)  
+    clave = models.CharField(db_column='CveTipoPersona', unique=True, max_length=20, verbose_name='Clave')  
+    descripcion = models.CharField(db_column='DescTipoPersona', unique=True, max_length=50, verbose_name='Descripcion')  
+    bandactivo = models.BooleanField(db_column='BandActivo', blank=False, null=False, default=True, verbose_name='Activo')  
 
     def __str__(self) -> str:
         return self.descripcion
@@ -73,16 +79,16 @@ class TipoPersona(models.Model):
 
 
 class PersonaPrincipal(models.Model):
-    idpersonaprincipal = models.SmallAutoField(db_column='IdPersonaPrincipal', primary_key=True)  # Field name made lowercase.
-    cvetipopersona = models.ForeignKey(TipoPersona, models.DO_NOTHING, db_column='CveTipoPersona')  # Field name made lowercase.
-    nombre = models.CharField(db_column='Nombre', max_length=100)  # Field name made lowercase.
-    primer_apellido = models.CharField(db_column='Primer_Apellido', max_length=50, blank=True, null=True)  # Field name made lowercase.
-    segundo_apellido = models.CharField(db_column='Segundo_Apellido', max_length=50, blank=True, null=True)  # Field name made lowercase.
-    correo = models.EmailField(db_column='Correo', max_length=70)  # Field name made lowercase.
-    telefono1 = models.CharField(db_column='Telefono1', max_length=50)  # Field name made lowercase.
-    telefono2 = models.CharField(db_column='Telefono2', max_length=50, blank=True, null=True)  # Field name made lowercase.
-    datestar = models.DateTimeField(db_column='DateStar',auto_now_add=True)  # Field name made lowercase.
-    bandactivo = models.BooleanField(db_column='BandActivo', blank=False, null=False, default=True, verbose_name='Activo')  # Field name made lowercase.
+    idpersonaprincipal = models.SmallAutoField(db_column='IdPersonaPrincipal', primary_key=True)  
+    cvetipopersona = models.ForeignKey(TipoPersona, models.DO_NOTHING, db_column='CveTipoPersona')  
+    nombre = models.CharField(db_column='Nombre', max_length=100)  
+    primer_apellido = models.CharField(db_column='Primer_Apellido', max_length=50, blank=True, null=True)  
+    segundo_apellido = models.CharField(db_column='Segundo_Apellido', max_length=50, blank=True, null=True)  
+    correo = models.EmailField(db_column='Correo', max_length=70)  
+    telefono1 = models.CharField(db_column='Telefono1', max_length=50)  
+    telefono2 = models.CharField(db_column='Telefono2', max_length=50, blank=True, null=True)  
+    datestar = models.DateTimeField(db_column='DateStar',auto_now_add=True)  
+    bandactivo = models.BooleanField(db_column='BandActivo', blank=False, null=False, default=True, verbose_name='Activo')  
 
     def __str__(self) -> str:
         return f"{self.nombre} {self.primer_apellido} {self.segundo_apellido}"
@@ -92,10 +98,10 @@ class PersonaPrincipal(models.Model):
 
 
 class Procesos(models.Model):
-    id_pk = models.SmallAutoField(db_column='IdProceso', primary_key=True)  # Field name made lowercase.
-    clave = models.CharField(db_column='CveProceso', unique=True, max_length=20)  # Field name made lowercase.
-    descripcion = models.CharField(db_column='DescProceso', unique=True, max_length=50)  # Field name made lowercase.
-    bandactivo = models.BooleanField(db_column='BandActivo', blank=False, null=False, default=True, verbose_name='Activo')  # Field name made lowercase.
+    id_pk = models.SmallAutoField(db_column='IdProceso', primary_key=True)  
+    clave = models.CharField(db_column='CveProceso', unique=True, max_length=20)  
+    descripcion = models.CharField(db_column='DescProceso', unique=True, max_length=50)  
+    bandactivo = models.BooleanField(db_column='BandActivo', blank=False, null=False, default=True, verbose_name='Activo')  
 
     def __str__(self) -> str:
         return self.clave
@@ -105,12 +111,12 @@ class Procesos(models.Model):
 
 
 class SeguimientoEvento(models.Model):
-    folioevento = models.PositiveSmallIntegerField(db_column='FolioEvento', primary_key=True)  # Field name made lowercase.
-    cvetipopersona = models.CharField(db_column='CveTipoPersona', max_length=20)  # Field name made lowercase.
-    cvepersona = models.CharField(db_column='CvePersona', max_length=20)  # Field name made lowercase.
-    cvetipoevento = models.CharField(db_column='CveTipoEvento', max_length=20)  # Field name made lowercase.
-    cveproceso = models.CharField(db_column='CveProceso', max_length=20)  # Field name made lowercase.
-    cvefase = models.CharField(db_column='CveFase', max_length=20)  # Field name made lowercase.
+    folioevento = models.PositiveSmallIntegerField(db_column='FolioEvento', primary_key=True)  
+    cvetipopersona = models.CharField(db_column='CveTipoPersona', max_length=20)  
+    cvepersona = models.CharField(db_column='CvePersona', max_length=20)  
+    cvetipoevento = models.CharField(db_column='CveTipoEvento', max_length=20)  
+    cveproceso = models.CharField(db_column='CveProceso', max_length=20)  
+    cvefase = models.CharField(db_column='CveFase', max_length=20)  
     history = HistoricalRecords()
 
     class Meta:
@@ -118,10 +124,10 @@ class SeguimientoEvento(models.Model):
 
 
 class TipoActividad(models.Model):
-    id_pk = models.SmallAutoField(db_column='IdTipoActividad', primary_key=True)  # Field name made lowercase.
-    clave = models.CharField(db_column='CveTipoActividad', max_length=20)  # Field name made lowercase.
-    descripcion = models.CharField(db_column='DescTipoActividad', max_length=50)  # Field name made lowercase.
-    bandactivo = models.BooleanField(db_column='BandActivo', blank=False, null=False, default=True, verbose_name='Activo')  # Field name made lowercase.
+    id_pk = models.SmallAutoField(db_column='IdTipoActividad', primary_key=True)  
+    clave = models.CharField(db_column='CveTipoActividad', max_length=20,)  
+    descripcion = models.CharField(db_column='DescTipoActividad', max_length=50)  
+    bandactivo = models.BooleanField(db_column='BandActivo', blank=False, null=False, default=True, verbose_name='Activo')  
 
     def __str__(self) -> str:
         return self.descripcion
@@ -131,10 +137,10 @@ class TipoActividad(models.Model):
 
 
 class TipoEvento(models.Model):
-    id_pk = models.SmallAutoField(db_column='IdTipoEvento', primary_key=True)  # Field name made lowercase.
-    clave = models.CharField(db_column='CveTipoEvento', unique=True, max_length=20)  # Field name made lowercase.
-    descripcion = models.CharField(db_column='DescTipoEvento', unique=False, max_length=50)  # Field name made lowercase.
-    bandactivo = models.BooleanField(db_column='BandActivo', blank=False, null=False, default=True, verbose_name='Activo')  # Field name made lowercase.
+    id_pk = models.SmallAutoField(db_column='IdTipoEvento', primary_key=True)  
+    clave = models.CharField(db_column='CveTipoEvento', unique=True, max_length=20)  
+    descripcion = models.CharField(db_column='DescTipoEvento', unique=False, max_length=50)  
+    bandactivo = models.BooleanField(db_column='BandActivo', blank=False, null=False, default=True, verbose_name='Activo')  
 
     def __str__(self) -> str:
         return self.descripcion
@@ -144,10 +150,10 @@ class TipoEvento(models.Model):
 
 
 class TipoServicio(models.Model):
-    id_pk = models.SmallAutoField(db_column='IdTipoServicio', primary_key=True)  # Field name made lowercase.
-    clave = models.CharField(db_column='CveTipoServicio', unique=True, max_length=20, verbose_name='Clave')  # Field name made lowercase.
-    descripcion = models.CharField(db_column='DescServicio', max_length=50, verbose_name='Descripcion')  # Field name made lowercase.
-    bandactivo = models.BooleanField(db_column='BandActivo', blank=False, null=False, default=True, verbose_name='Activo')  # Field name made lowercase.
+    id_pk = models.SmallAutoField(db_column='IdTipoServicio', primary_key=True)  
+    clave = models.CharField(db_column='CveTipoServicio', unique=True, max_length=20, verbose_name='Clave')  
+    descripcion = models.CharField(db_column='DescServicio', max_length=50, verbose_name='Descripcion')  
+    bandactivo = models.BooleanField(db_column='BandActivo', blank=False, null=False, default=True, verbose_name='Activo')  
 
     def __str__(self) -> str:
         return self.descripcion
@@ -173,48 +179,36 @@ class Foto(models.Model):
 
 
 class EncEvento(models.Model):
-    folioevento = models.SmallAutoField(db_column='FolioEvento', primary_key=True)  # Field name made lowercase.
-    cvetipoevento = models.ForeignKey(TipoEvento, models.DO_NOTHING, db_column='CveTipoEvento')  # Field name made lowercase.
-    cvepersona = models.ForeignKey(PersonaPrincipal, models.DO_NOTHING, db_column='CvePersona')  # Field name made lowercase.
-    opcion = models.PositiveSmallIntegerField(db_column='Opcion', blank=True, null=True)  # Field name made lowercase.
-    nombre = models.CharField(db_column='Nombre', max_length=50, blank=True, null=True)  # Field name made lowercase.
-    banaprovada = models.BooleanField(db_column='BanAprovada', blank=False, null=False, default=True, verbose_name='Aprobada')  # Field name made lowercase.
+    id_pk = models.SmallAutoField(db_column='FolioEvento', primary_key=True)  
+    cvetipoevento = models.ForeignKey(TipoEvento, models.DO_NOTHING, db_column='CveTipoEvento', verbose_name="Tipo de evento",)  
+    cvepersona = models.ForeignKey(PersonaPrincipal, models.DO_NOTHING, db_column='CvePersona', verbose_name="Persona")  
+    opcion = models.PositiveSmallIntegerField(db_column='Opcion', null=False, default=1, choices=[(1,'1'),(2,'2'),(3,'3')], verbose_name="Opcion")  
+    nombre = models.CharField(db_column='Nombre', max_length=50, blank=True, null=True)  
+    numeropersonas = models.PositiveSmallIntegerField(db_column='numero_personas',default=0,  blank=False, null=True, verbose_name="Numero de personas")  
+    banaprovada = models.BooleanField(db_column='BanAprovada', blank=False, null=False, default=True, verbose_name='Aprobada')  
     history = HistoricalRecords()
+
+    def __str__(self):
+        return f"{self.nombre} para el cliente {self.cvepersona} del tipo {self.cvetipoevento}"
 
     class Meta:
         db_table = 'enc_evento'
 
 
-
-class EncEventoOpcion(models.Model):
-    folioevento = models.PositiveSmallIntegerField(db_column='FolioEvento', primary_key=True)  # Field name made lowercase.
-    evento = models.PositiveSmallIntegerField(db_column='CveEvento')  # Field name made lowercase.
-    persona = models.PositiveSmallIntegerField(db_column='CvePersona')  # Field name made lowercase.
-    numopcion = models.PositiveSmallIntegerField(db_column='NumOpcion', blank=True, null=True)  # Field name made lowercase.
-    nombre = models.CharField(db_column='Nombre', max_length=50, blank=True, null=True)  # Field name made lowercase.
-    monto = models.FloatField(db_column='Monto', blank=True, null=True)  # Field name made lowercase.
-    history = HistoricalRecords()
-
-    def __str__(self) -> str:
-        return self.nombre
-
-
-    class Meta:
-        db_table = 'enc_evento_opcion'
-
-
 class DetEvento(models.Model):
-    iddetalle = models.PositiveSmallIntegerField(db_column='IdDetalle', primary_key=True)  # Field name made lowercase.
-    cveopcion = models.ForeignKey('EncEventoOpcion', models.DO_NOTHING, db_column='CveOpcion')  # Field name made lowercase.
-    cvetipoactividad = models.ForeignKey('TipoActividad', models.DO_NOTHING, db_column='CveTipoActividad')  # Field name made lowercase.
-    cvedesgloseservicio = models.ForeignKey(DesgloseServicio, models.DO_NOTHING, db_column='CveDesgloseServicio')  # Field name made lowercase.
-    cveclasifservicio = models.ForeignKey(ClasifServicio, models.DO_NOTHING, db_column='CveClasifServicio')  # Field name made lowercase.
-    cvetiposervicio = models.ForeignKey('TipoServicio', models.DO_NOTHING, db_column='CveTipoServicio')  # Field name made lowercase.
-    costo = models.FloatField(db_column='Costo', blank=True, null=True)  # Field name made lowercase.
-    fecha = models.DateTimeField(db_column='Fecha', blank=True, null=True)  # Field name made lowercase.
-    tiempo = models.PositiveSmallIntegerField(db_column='Tiempo', null=True, blank=False, default=None)
-    estatus = models.ForeignKey(EstatusActividad, models.DO_NOTHING, db_column='CveEstatus', null=True, default=None)
-    nota = models.CharField(db_column='Notas', null= True, default=None, max_length=100)
+    iddetalle = models.SmallAutoField(db_column='IdDetalle', primary_key=True)  
+    cveevento = models.ForeignKey('EncEvento', models.DO_NOTHING, db_column='CveEvento', default=None, null=True, )  
+    opcion = models.PositiveSmallIntegerField(db_column='Opcion', null=False, default=1, choices=[(1,'1'),(2,'2'),(3,'3')], verbose_name="Opcion")
+    cvetipoactividad = models.ForeignKey('TipoActividad', models.DO_NOTHING, db_column='CveTipoActividad', verbose_name='Actividad')  
+    proveedor = models.ForeignKey('PersonaPrincipal', models.DO_NOTHING, null=True, default=None, db_column='cveproveedor', verbose_name='Proveedor')  
+    cvedesgloseservicio = models.ForeignKey('DesgloseServicio', models.DO_NOTHING, db_column='CveDesgloseServicio', verbose_name='Desglose')  
+    cveclasifservicio = models.ForeignKey('ClasifServicio', models.DO_NOTHING, db_column='CveClasifServicio', verbose_name='Clasificacion')  
+    cvetiposervicio = models.ForeignKey('TipoServicio', models.DO_NOTHING, db_column='CveTipoServicio', verbose_name='Servicio')  
+    costo = models.FloatField(db_column='Costo', blank=True, null=True, verbose_name='Costo')  
+    fecha = models.DateTimeField(db_column='Fecha', blank=True, null=True, verbose_name='Fecha')  
+    tiempo = models.PositiveSmallIntegerField(db_column='Tiempo', null=True, blank=False, default=None,  verbose_name='Tiempo')
+    estatus = models.ForeignKey(EstatusActividad, models.DO_NOTHING, db_column='CveEstatus', null=True, default=None, verbose_name='Estatus')
+    nota = models.CharField(db_column='Notas', null= True, blank=True, default=None, max_length=100,  verbose_name='Notas')
     history = HistoricalRecords()
 
     class Meta:
@@ -224,21 +218,39 @@ class DetEvento(models.Model):
 
 class Egresos(models.Model):
     id_egresos = models.SmallAutoField(primary_key=True)
-    cve_detalle = models.ForeignKey(DetEvento, models.DO_NOTHING, db_column='Cve_detalle')  # Field name made lowercase.
-    monto = models.FloatField(db_column='Monto')  # Field name made lowercase.
-    spei = models.CharField(db_column='SPEI', max_length=50)  # Field name made lowercase.
+    cve_detalle = models.ForeignKey(DetEvento, models.DO_NOTHING, db_column='Cve_detalle')  
+    monto = models.FloatField(db_column='Monto')  
+    spei = models.CharField(db_column='SPEI', max_length=50)  
     history = HistoricalRecords()
 
     class Meta:
         db_table = 'egresos'
 
 class Ingresos(models.Model):
-    idingresos = models.OneToOneField(EncEvento, models.DO_NOTHING, db_column='IdIngresos', primary_key=True)  # Field name made lowercase.
-    cveevento = models.PositiveSmallIntegerField(db_column='CveEvento')  # Field name made lowercase.
-    monto = models.FloatField(db_column='Monto')  # Field name made lowercase.
-    spei = models.CharField(db_column='SPEI', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    idingresos = models.OneToOneField(EncEvento, models.DO_NOTHING, db_column='IdIngresos', primary_key=True)  
+    cveevento = models.PositiveSmallIntegerField(db_column='CveEvento')  
+    monto = models.FloatField(db_column='Monto')  
+    spei = models.CharField(db_column='SPEI', max_length=50, blank=True, null=True)  
     history = HistoricalRecords()
 
     class Meta:
         db_table = 'ingresos'
 
+
+class parametros_colores(models.Model):
+    elemento = models.CharField(db_column='elemento', max_length=50, blank=False, null=False)
+    color = models.CharField(db_column='color', max_length=9, blank=False, null=False)
+
+    class Meta:
+        db_table = 'parametros_colores'
+
+class parametros_imagenes(models.Model):
+    title = models.CharField(max_length=60, default='', blank=True)
+    description = models.TextField(max_length=200, default='', blank=True)
+    width = models.IntegerField(default=0)
+    height = models.IntegerField(default=0)
+    image = models.ImageField(width_field="width", height_field="height")
+    timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
+
+    def __str__(self):
+        return self.title
