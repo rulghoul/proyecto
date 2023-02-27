@@ -34,7 +34,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'rest_framework',    
     'simple_history',
-    'fontawesomefree',    
+    'fontawesomefree',
+    'django_cascading_dropdown_widget',
 #    'bootstrap_modal_forms',
 #    'easy_maps',
 ]

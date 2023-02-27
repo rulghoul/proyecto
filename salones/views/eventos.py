@@ -16,7 +16,10 @@ from .restview import *
 from .sistema import *
 
 from salones.models import EncEvento, DetEvento
-from salones.forms import EventoCompletoForm
+from salones.models import DesgloseServicio, ClasifServicio
+from salones.forms import EventoCompletoForm, DetalleEventoForm
+
+
 
 
 class eventos(ListView):
@@ -130,12 +133,13 @@ class detail_evento_completo(DetailView):
 
 class add_evento_detalle(LoginRequiredMixin, CreateView):
     model = DetEvento
-    template_name = 'salones/catalogos/add.html'    
-    fields = ['cvetipoactividad','cvetiposervicio','cvedesgloseservicio',
-              'cveclasifservicio','costo', 'proveedor',
-              'fecha','tiempo','estatus','nota', 
-              ]
-    
+    template_name = 'salones/evento/detalle_evento_form.html'    
+    #fields = ['cvetipoactividad','cvetiposervicio','cvedesgloseservicio',
+    #          'cveclasifservicio','costo', 'proveedor',
+    #          'fecha','tiempo','estatus','nota', 
+    #          ]
+    form_class = DetalleEventoForm
+
     # def get_form(self, form_class):
     #     form = super(add_evento_detalle, self).get_form(form_class)
     #     form.fields['project'].queryset = EncEvento.objects.get(pk=self.request.GET['pk'])
@@ -204,3 +208,18 @@ class detail_evento_detalle(LoginRequiredMixin, DetailView):
         context['titulo'] = "Especificacion del detalle del evento"
         context['regresa'] = f"eventos"
         return context
+    
+########################################################################
+########################### DropDowns ############################
+########################################################################
+
+def load_clases_servicio(request):
+    id_tipo_servicio = request.GET.get('clasificacion')
+    clasificacion_servicio = ClasifServicio.objects.filter(cvetiposervicio=id_tipo_servicio).order_by('descripcion')
+    return render(request, 'salones/evento/drowdown.html', {'lista': clasificacion_servicio})
+
+
+def load_desglose_servicio(request):
+    id_tipo_servicio = request.GET.get('desglose')
+    desglose_servicio = DesgloseServicio.objects.filter(cveclasifservicio=id_tipo_servicio).order_by('descripcion')
+    return render(request, 'salones/evento/drowdown.html', {'lista': desglose_servicio})

@@ -2,9 +2,10 @@ from django.forms import ModelForm, TextInput, EmailInput, NumberInput, Select, 
 from salones.models import (
     TipoActividad, 
     TipoEvento, 
-    TipoServicio,
+    TipoServicio, ClasifServicio, DesgloseServicio,
     TipoPersona, 
-    EncEvento,
+    EncEvento, 
+    DetEvento,
     PersonaPrincipal)
 
 class ActividadForm(ModelForm):
@@ -58,6 +59,39 @@ class EventoCompletoForm(ModelForm):
                 }),
 
         }
+
+
+class DetalleEventoForm(ModelForm):
+    class Meta:
+        model = DetEvento
+        fields = ['cvetipoactividad','cvetiposervicio',
+        'cveclasifservicio','cvedesgloseservicio', 'costo', 'proveedor',
+        'fecha','tiempo','estatus','nota', 
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['cveclasifservicio'].queryset = ClasifServicio.objects.none()
+        self.fields['cvedesgloseservicio'].queryset = DesgloseServicio.objects.none()
+        self.fields['proveedor'].queryset = PersonaPrincipal.objects.filter(cvetipopersona=3).all()
+
+        if 'cvetiposervicio' in self.data:
+            try:
+                servicio_id = int(self.data.get('cvetiposervicio'))
+                self.fields['cveclasifservicio'].queryset = ClasifServicio.objects.filter(cvetiposervicio=servicio_id).order_by('descripcion')
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty City queryset
+        elif self.instance.pk:
+            self.fields['cveclasifservicio'].queryset = self.instance.cveclasifservicio.cveclasifservicio_set.order_by('descripcion')
+
+        if 'cveclasifservicio' in self.data:
+            try:
+                clasificacion_id = int(self.data.get('cveclasifservicio'))
+                self.fields['cvedesgloseservicio'].queryset = DesgloseServicio.objects.filter(cveclasifservicio=clasificacion_id).order_by('descripcion')
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty City queryset
+        elif self.instance.pk:
+            self.fields['cvedesgloseservicio'].queryset = self.instance.cvedesgloseservicio.cvedesgloseservicio_set.order_by('descripcion')
 
 
 class TipoClienteForm(ModelForm):

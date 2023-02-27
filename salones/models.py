@@ -10,13 +10,13 @@ from simple_history.models import HistoricalRecords
 
 class ClasifServicio(models.Model):
     idclasifservicio = models.SmallAutoField(db_column='IdClasifServicio', primary_key=True)  
-    cvetiposervicio = models.ForeignKey('TipoServicio', models.DO_NOTHING, db_column='CveTipoServicio')  
+    cvetiposervicio = models.ForeignKey('TipoServicio', models.CASCADE, db_column='CveTipoServicio')  
     cveclasifservicio = models.CharField(db_column='CveClasifServicio', unique=False, max_length=20)  
-    descclasifservicio = models.CharField(db_column='DescClasifServicio', unique=False, max_length=50)  
+    descripcion = models.CharField(db_column='DescClasifServicio', unique=False, max_length=50)  
     bandactivo = models.BooleanField(db_column='BandActivo', blank=False, null=False, default=True, verbose_name='Activo')  
 
     def __str__(self) -> str:
-        return self.descclasifservicio
+        return self.descripcion
 
     class Meta:
         db_table = 'clasif_servicio'
@@ -24,14 +24,14 @@ class ClasifServicio(models.Model):
 
 class DesgloseServicio(models.Model):
     iddesgloseservicio = models.SmallAutoField(db_column='IdDesgloseServicio', primary_key=True)  
-    cveclasifservicio = models.ForeignKey(ClasifServicio, models.DO_NOTHING, db_column='CveClasifServicio')  
+    cveclasifservicio = models.ForeignKey(ClasifServicio, models.CASCADE, db_column='CveClasifServicio')  
     cvedesgloseservicio = models.CharField(db_column='CveDesgloseServicio', unique=False, max_length=20)  
-    descdesgloseservicio = models.CharField(db_column='DescDesgloseServicio', unique=False, max_length=50)  
+    descripcion = models.CharField(db_column='DescDesgloseServicio', unique=False, max_length=50)  
     bandactivo = models.BooleanField(db_column='BandActivo', blank=False, null=False, default=True, verbose_name='Activo')  
     datelastupdate = models.DateTimeField(db_column='DateLastUpdate')  
     
     def __str__(self) -> str:
-        return self.descdesgloseservicio
+        return self.descripcion
     
     class Meta:
         db_table = 'desglose_servicio'
@@ -91,7 +91,7 @@ class PersonaPrincipal(models.Model):
     bandactivo = models.BooleanField(db_column='BandActivo', blank=False, null=False, default=True, verbose_name='Activo')  
 
     def __str__(self) -> str:
-        return f"{self.nombre} {self.primer_apellido} {self.segundo_apellido}"
+        return f"{self.nombre} {(self.primer_apellido or '')} {(self.segundo_apellido or '')}"
 
     class Meta:
         db_table = 'persona_principal'
@@ -197,7 +197,7 @@ class EncEvento(models.Model):
 
 class DetEvento(models.Model):
     iddetalle = models.SmallAutoField(db_column='IdDetalle', primary_key=True)  
-    cveevento = models.ForeignKey('EncEvento', models.DO_NOTHING, db_column='CveEvento', default=None, null=True, )  
+    cveevento = models.ForeignKey('EncEvento', models.CASCADE, db_column='CveEvento', default=None, null=True, )  
     opcion = models.PositiveSmallIntegerField(db_column='Opcion', null=False, default=1, choices=[(1,'1'),(2,'2'),(3,'3')], verbose_name="Opcion")
     cvetipoactividad = models.ForeignKey('TipoActividad', models.DO_NOTHING, db_column='CveTipoActividad', verbose_name='Actividad')  
     proveedor = models.ForeignKey('PersonaPrincipal', models.DO_NOTHING, null=True, default=None, db_column='cveproveedor', verbose_name='Proveedor')  
